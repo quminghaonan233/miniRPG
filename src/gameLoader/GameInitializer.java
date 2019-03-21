@@ -2,6 +2,8 @@ package gameLoader;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -47,7 +49,7 @@ public class GameInitializer {
 		this.userX = m.getStartX();
 		this.userY = m.getStartY();
 		
-	    frame = new JFrame("miniRPG");
+	    frame = new KeyBoardFrame("miniRPG");
 	    
 	    frame.setSize(GUIWidth, GUIHeight);
 	    frame.setLocationRelativeTo(null);
@@ -100,7 +102,9 @@ public class GameInitializer {
 	
 	
 	private void refreshUser() {
-		
+		ImageIcon userIcon = new ImageIcon(user.getImagePath());
+		userIcon.setImage(userIcon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
+		labelList[userX][userY].setIcon(userIcon);
 	}
 	
 	private void FightTrigger() {
@@ -145,4 +149,84 @@ public class GameInitializer {
 	}
 	
 	
+	public void slimeMove() {
+		Area[][] areaMap = gameMap.getAreaMap();
+		Area[][] newAreaMap = new Area[GameMap.xSize][GameMap.ySize];
+		
+		for(int i = 0 ;i < GameMap.xSize;i++) {
+			for(int j = 0;j < GameMap.ySize;j++) {
+				if(areaMap[i][j] != null && areaMap[i][j].getSlimeList().size() > 0) {
+					for(Slime s:areaMap[i][j].getSlimeList()) {
+						int[] moveResult = s.move(i,j,userX,userY);
+						if(newAreaMap[moveResult[0]][moveResult[1]] == null) {
+							newAreaMap[moveResult[0]][moveResult[1]] = new Area();
+						}
+						newAreaMap[moveResult[0]][moveResult[1]].getSlimeList().add(s);
+					}
+				}
+			}
+		}
+		areaMap = newAreaMap;
+	}
+	
+	public class KeyBoardFrame extends JFrame {
+
+		public KeyBoardFrame(String string) {
+			super(string);
+			this.addKeyListener(new KeyBoardListener());
+		}
+
+
+		class KeyBoardListener implements KeyListener{
+			@Override
+			public void keyTyped(KeyEvent e) {
+//				System.out.println("ÊäÈë£º" + e.getKeyChar() + "\n");		
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				boolean changed = false;
+				switch(KeyEvent.getKeyText(e.getKeyCode())){
+					case("W"):
+						if(userY > 0) {
+							userY--;
+							changed = true;
+						}
+						break;
+					case("A"):
+						if(userX > 0) {
+							userX--;
+							changed = true;
+						}
+						break;
+					case("S"):
+						if(userY < GameMap.ySize - 1) {
+							userY++;
+							changed = true;
+						}
+						break;
+					case("D"):
+						if(userX < GameMap.xSize - 1) {
+							userX++;
+							changed = true;
+						}
+						break;
+					default:
+						break;
+				}
+				
+				if(changed) {
+					slimeMove();
+					refresh();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+//				System.out.println("ËÉ¿ª£º"+KeyEvent.getKeyText(e.getKeyCode()) + "\n");
+				
+			}
+
+		}
+	}
 }

@@ -213,4 +213,134 @@ public class User implements Serializable{
 	public void setCRT(double cRT) {
 		CRT = cRT;
 	}
+	
+	public double getHPDecroted() {
+		double tempHP = HP;
+		for(equip e :equipList){
+			tempHP += e.getHP();
+		}
+		return tempHP;
+	}
+
+	public double getMPDecroted() {
+		double tempMP = MP;
+		for(equip e :equipList){
+			tempMP += e.getMP();
+		}
+		return tempMP;
+	}
+
+	public double getP_ATKDecroted() {
+		double tempP_ATK = P_ATK;
+		for(equip e :equipList){
+			tempP_ATK += e.getP_ATK();
+		}
+		return tempP_ATK;
+	}
+
+	public double getP_DEFDecroted() {
+		double tempP_DEF = P_DEF;
+		for(equip e :equipList){
+			tempP_DEF += e.getP_DEF();
+		}
+		return tempP_DEF;
+	}
+
+	public double getM_ATKDecroted() {
+		double tempM_ATK = M_ATK;
+		for(equip e :equipList){
+			tempM_ATK += e.getM_ATK();
+		}
+		return tempM_ATK;
+	}
+
+	public double getM_DEFDecroted() {
+		double tempM_DEF = M_DEF;
+		for(equip e :equipList){
+			tempM_DEF += e.getM_DEF();
+		}
+		return tempM_DEF;
+	}
+
+	public double getSTRDecroted() {
+		double tempSTR = STR;
+		for(equip e :equipList){
+			tempSTR += e.getSTR();
+		}
+		return tempSTR;
+	}
+	
+
+	public double getAGIDecroted() {
+		double tempAGI = AGI;
+		for(equip e :equipList){
+			tempAGI += e.getAGI();
+		}
+		return tempAGI;
+	}
+
+	public double getINTDecroted() {
+		double tempINT = INT;
+		for(equip e :equipList){
+			tempINT += e.getINT();
+		}
+		return tempINT;
+	}
+
+	public double getAVDDecroted() {
+		double tempAVD = AVD;
+		for(equip e :equipList){
+			tempAVD += e.getAVD();
+		}
+		return tempAVD;
+	}
+
+
+	public double getCRTDecroted() {
+		double tempCRT = CRT;
+		for(equip e :equipList){
+			tempCRT += e.getCRT();
+		}
+		return tempCRT;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public ArrayList<equip> getEquipList() {
+		return equipList;
+	}
+
+	public void setEquipList(ArrayList<equip> equipList) {
+		this.equipList = equipList;
+	}
+
+	public ArrayList<equip> getEquipPackage() {
+		return equipPackage;
+	}
+
+	public void setEquipPackage(ArrayList<equip> equipPackage) {
+		this.equipPackage = equipPackage;
+	}
+
+	public ArrayList<Medicine> getMedicinePackage() {
+		return medicinePackage;
+	}
+
+	public void setMedicinePackage(ArrayList<Medicine> medicinePackage) {
+		this.medicinePackage = medicinePackage;
+	}
+
+	public ArrayList<Scroll> getScrollPackage() {
+		return scrollPackage;
+	}
+
+	public void setScrollPackage(ArrayList<Scroll> scrollPackage) {
+		this.scrollPackage = scrollPackage;
+	}
 }

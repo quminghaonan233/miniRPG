@@ -98,4 +98,28 @@ public class Slime {
 	public void equipmentBuilder() {
 		
 	}
+	
+	public int[] move(int slimeX,int slimeY,int userX,int userY) {
+		int[] result = new int[2];
+		if(Math.abs(slimeX - userX) >= Math.abs(slimeY-userY)) {
+			if(slimeX < userX) {
+				result[0] = slimeX + 1;
+			}
+			else {
+				result[0] = slimeX - 1;
+			}
+			result[1] = slimeY;
+		}
+		else {
+			if(slimeY < userY) {
+				result[1] = slimeY + 1;
+			}
+			else {
+				result[1] = slimeY - 1;
+			}
+			result[0] = slimeX;
+		}	
+		
+		return result;
+	}
 }
