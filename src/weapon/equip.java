@@ -1,78 +1,46 @@
-package user;
+package weapon;
 
+public class equip {
+	
+	protected int num;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import Medicine.Medicine;
-import scroll.Scroll;
-import weapon.equip;
-
-public class User implements Serializable{
-	private static final long serialVersionUID = 1L;
-	
-	protected String userName;
-	protected int roleType;
-	protected String imagePath;
-	
-	
-	//已装备武器
-	protected ArrayList<equip> equipList;
-	
-	//背包物品
-	protected ArrayList<equip> equipPackage;
-	protected ArrayList<Medicine> medicinePackage;
-	protected ArrayList<Scroll> scrollPackage;
-	
 	//生命
 	protected double HP;
 	
 	//魔法
 	protected double MP;
-	
-	//等级
-	protected double LV;
-	
-	//经验
-	protected double EXP;
-	
+		
 	//物理攻击
 	protected double P_ATK;
-	
+		
 	//物理防御
 	protected double P_DEF;
-	
+		
 	//魔法攻击
 	protected double M_ATK;
-	
+		
 	//魔法防御
 	protected double M_DEF;
-	
+		
 	//力量
 	protected double STR;
-	
+		
 	//敏捷
 	protected double AGI;
-	
+		
 	//智力
 	protected double INT;
-	
+		
 	//闪避
 	protected double AVD;
-	
+		
 	//暴击
 	protected double CRT;
 	
-
-	public User() {
-		
-	}
 	
-	//角色初始化
-	public User(String userName,int roleType) {
-		this.userName = userName;
-		this.roleType = roleType;
-		this.imagePath = "";
+
+	public equip() {
+		this.num = 0;
 		
 		this.HP = 0;
 		this.MP = 0;
@@ -85,31 +53,16 @@ public class User implements Serializable{
 		this.INT = 0;
 		this.AVD = 0;
 		this.CRT = 0;
-		
-		this.equipList = new ArrayList<equip>();
-		
-		this.equipPackage = new ArrayList<equip>();
-		this.medicinePackage = new ArrayList<Medicine>();
-		this.scrollPackage = new ArrayList<Scroll>();
-
 	}
 	
-	public String getUserName() {
-		return userName;
+	public int getNum() {
+		return num;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setNum(int num) {
+		this.num = num;
 	}
 
-	public int getRoleType() {
-		return roleType;
-	}
-
-	public void setRoleType(int roleType) {
-		this.roleType = roleType;
-	}
-	
 	public double getHP() {
 		return HP;
 	}
@@ -124,22 +77,6 @@ public class User implements Serializable{
 
 	public void setMP(double mP) {
 		MP = mP;
-	}
-
-	public double getLV() {
-		return LV;
-	}
-
-	public void setLV(double lV) {
-		LV = lV;
-	}
-
-	public double getEXP() {
-		return EXP;
-	}
-
-	public void setEXP(double eXP) {
-		EXP = eXP;
 	}
 
 	public double getP_ATK() {
