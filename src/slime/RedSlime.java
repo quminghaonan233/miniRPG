@@ -9,4 +9,7 @@ public class RedSlime extends Slime{
 		this.imagePath = path;
 		this.SlimeType = type;
 	}
+	public String getSlimeName() {
+		return "ºìÉ«Ê·À³Ä·";
+	}
 }

@@ -10,4 +10,7 @@ public class GreenSlime extends Slime {
 		this.imagePath = path;
 		this.SlimeType = type;
 	}
+	public String getSlimeName() {
+		return "бли╚й╥юЁд╥";
+	}
 }
