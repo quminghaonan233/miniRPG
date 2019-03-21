@@ -18,7 +18,17 @@ public class BattleLogic {
 	}
 	
 	public void userATK(User user, Slime slime, int controlNum) {
-		
+		if(controlNum == 0) {
+			user.attack(slime);
+		}else if(controlNum == 1) {
+			
+		}else if(controlNum == 2) {
+			
+		}else if(controlNum == 3) {
+			
+		}else if(controlNum == 4) {
+			
+		}
 	}
 	
 	public void enemyATK(Slime slime,User user) {

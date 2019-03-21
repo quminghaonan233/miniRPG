@@ -122,4 +122,11 @@ public class Slime {
 		
 		return result;
 	}
+	
+	public boolean isAlive() {
+		if(this.HP>0) {
+			return true;
+		}
+		return false;
+	}
 }

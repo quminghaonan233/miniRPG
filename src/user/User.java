@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import Medicine.Medicine;
 import scroll.Scroll;
+import slime.Slime;
 import weapon.equip;
 
 public class User implements Serializable{
@@ -342,5 +343,11 @@ public class User implements Serializable{
 
 	public void setScrollPackage(ArrayList<Scroll> scrollPackage) {
 		this.scrollPackage = scrollPackage;
+	}
+	
+	public void attack(Slime slime) {
+		double damage = this.getP_ATKDecroted()-slime.getP_DEF();
+		double slimeHP=slime.getHP();
+		slime.setHP(damage>slimeHP?damage-slimeHP:0);
 	}
 }

@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import slime.GreenSlime;
+import slime.RedSlime;
 import slime.Slime;
 import user.User;
 
@@ -114,21 +116,21 @@ public class BattleHandler{
 		panel.add(nameLabel);
 		
 		JLabel stateLabel = new JLabel();
-		stateLabel.setText("中 毒");
+		stateLabel.setText("状态");
 		stateLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 		stateLabel.setLocation(330,10);
 		stateLabel.setSize(80,40);
 		panel.add(stateLabel);
 		
 		JLabel HPLabel = new JLabel();
-		HPLabel.setText("生命 : " + "100000");
+		HPLabel.setText("生命 : " + (int)user.getHPDecroted());
 		HPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		HPLabel.setLocation(40,60);
 		HPLabel.setSize(240,50);
 		panel.add(HPLabel);
 		
 		JLabel MPLabel = new JLabel();
-		MPLabel.setText("魔法 : " + "100000");
+		MPLabel.setText("魔法 : " + (int)user.getMPDecroted());
 		MPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		MPLabel.setLocation(320,60);
 		MPLabel.setSize(240,50);
@@ -136,7 +138,7 @@ public class BattleHandler{
 
 		//enemy state
 		JLabel enameLabel = new JLabel();
-		enameLabel.setText(user.getUserName());
+		enameLabel.setText(slime.getSlimeName());
 		enameLabel.setFont(new Font("Serif", Font.BOLD, 30));
 		enameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		enameLabel.setLocation(970,10);
@@ -144,21 +146,21 @@ public class BattleHandler{
 		panel.add(enameLabel);
 		
 		JLabel estateLabel = new JLabel();
-		estateLabel.setText("中 毒");
+		estateLabel.setText("状态");
 		estateLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 		estateLabel.setLocation(830,10);
 		estateLabel.setSize(80,40);
 		panel.add(estateLabel);
 		
 		JLabel eHPLabel = new JLabel();
-		eHPLabel.setText("生命 : " + "100000");
+		eHPLabel.setText("生命 : " + (int)slime.getHP());
 		eHPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		eHPLabel.setLocation(640,60);
 		eHPLabel.setSize(240,50);
 		panel.add(eHPLabel);
 		
 		JLabel eMPLabel = new JLabel();
-		eMPLabel.setText("魔法 : " + "100000");
+		eMPLabel.setText("魔法 : " + (int)slime.getMP());
 		eMPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		eMPLabel.setLocation(920,60);
 		eMPLabel.setSize(240,50);
@@ -193,7 +195,6 @@ public class BattleHandler{
 					enemyATKHandler();
 					buttonEnable();
 				}
-				user.setUserName("zhong");
 				panelRefresh();
 				controlNum = -1;
 			}
@@ -219,7 +220,6 @@ public class BattleHandler{
 					enemyATKHandler();
 					buttonEnable();
 				}
-				user.setUserName("shang");
 				panelRefresh();
 				controlNum = -1;
 			}
@@ -245,7 +245,6 @@ public class BattleHandler{
 					enemyATKHandler();
 					buttonEnable();
 				}
-				user.setUserName("xia");
 				panelRefresh();
 				controlNum = -1;
 			}
@@ -338,7 +337,17 @@ public class BattleHandler{
 		panel.add(skillButton4);
 		
 		JLabel descLabel = new JLabel();
-		descLabel.setText("技能描述");
+		if (controlNum == 0) {
+			descLabel.setText("普通攻击");
+		}else if (controlNum == 1) {
+			descLabel.setText("技能1描述");
+		}else if (controlNum == 2) {
+			descLabel.setText("技能2描述");
+		}else if (controlNum == 3) {
+			descLabel.setText("技能3描述");
+		}else if (controlNum == 4) {
+			descLabel.setText("技能4描述");
+		}
 		descLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 		descLabel.setOpaque(true);
 		descLabel.setBackground(Color.green);
@@ -394,9 +403,12 @@ public class BattleHandler{
 	public static void main(String[] args) {
 		User user =new User("大魔王",2);
 		List<Slime> slimeList = new ArrayList<Slime>();
-		for (int i=0;i<2;i++) {
-			slimeList.add(new Slime());
-		}
+		Slime slime1 = new GreenSlime();
+		slimeList.add(slime1);
+		Slime slime2 = new RedSlime();
+		slimeList.add(slime2);
+		Slime slime3 = new GreenSlime();
+		slimeList.add(slime3);
 		new BattleHandler(user, slimeList).start();
 	}
 	
