@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import slime.Slime;
+import slime.SlimeFactory;
+import slime.SlimeType;
 
 public class GameMap implements Serializable{
-	private static final int xSize = 20;
-	private static final int ySize = 16;
+	public static final int xSize = 16;
+	public static final int ySize = 16;
+	private static final int slimeNumMin = 10;
 	
 	private int level;
 	
@@ -17,12 +20,10 @@ public class GameMap implements Serializable{
 	private int startY;
 	
 	private int endX;
-	
+
 	private int endY;
 	
-	private int [][] mapArr;
-	
-	private ArrayList<Slime> slimeList;
+	private Area [][] AreaMap;
 	
 	
 	//用于初始化开始地图
@@ -32,7 +33,7 @@ public class GameMap implements Serializable{
 	
 	public GameMap(int level) {
 		this.level = level;
-		this.mapArr = new int[xSize][ySize];
+		this.AreaMap = new Area[xSize][ySize];
 		initialStartEnd();		
 		initialSlime();
 	}
@@ -45,7 +46,69 @@ public class GameMap implements Serializable{
 	}
 	
 	private void initialSlime() {
+		Random r = new Random();
+		int slimeNum = slimeNumMin + r.nextInt(slimeNumMin);
+		for (int i = 0; i < slimeNum; i++) {
+			int slimeType = r.nextInt(SlimeType.values().length);
+			
+			SlimeFactory s = SlimeType.getFactory(slimeType);
+			int x = r.nextInt(xSize);
+			int y = r.nextInt(ySize);
+//			System.out.println(x+";"+y+";"+slimeType);
+			if(AreaMap[x][y] == null) {
+				AreaMap[x][y] = new Area();
+			}
+			ArrayList <Slime> slimeList = AreaMap[x][y].getSlimeList();
+			slimeList.add(s.createSlime());			
+		}
 		
-		
+	}
+	
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getStartX() {
+		return startX;
+	}
+
+	public void setStartX(int startX) {
+		this.startX = startX;
+	}
+
+	public int getStartY() {
+		return startY;
+	}
+
+	public void setStartY(int startY) {
+		this.startY = startY;
+	}
+
+	public int getEndX() {
+		return endX;
+	}
+
+	public void setEndX(int endX) {
+		this.endX = endX;
+	}
+
+	public int getEndY() {
+		return endY;
+	}
+
+	public void setEndY(int endY) {
+		this.endY = endY;
+	}
+
+	public Area[][] getAreaMap() {
+		return AreaMap;
+	}
+
+	public void setAreaMap(Area[][] areaMap) {
+		AreaMap = areaMap;
 	}
 }

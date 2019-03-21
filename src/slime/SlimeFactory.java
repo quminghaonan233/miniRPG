@@ -1,5 +1,5 @@
 package slime;
 
-public class SlimeFactory {
-
+public interface SlimeFactory {
+	public Slime createSlime();
 }

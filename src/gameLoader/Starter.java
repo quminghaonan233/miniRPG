@@ -30,6 +30,8 @@ public class Starter{
     	frame = new JFrame("MiniRPG_start");
 
         frame.setSize(GUIWidth, GUIHeight);
+        frame.setLocationRelativeTo(null);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();    
@@ -66,7 +68,6 @@ public class Starter{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				frame.dispose();
 			}
 		});

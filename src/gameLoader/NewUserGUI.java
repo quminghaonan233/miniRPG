@@ -12,6 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import user.RoleType;
+import user.User;
+
 public class NewUserGUI {
 	
 	//界面大小
@@ -31,10 +34,14 @@ public class NewUserGUI {
 	private JTextField userNameText;
 	private JLabel userNameMessage;
 	
+	private JButton [] roleButtonList;
+	
 	public void createNewUser() {
 	    JFrame frame = new JFrame("choose a role");
 	    
 	    frame.setSize(GUIWidth, GUIHeight);
+	    frame.setLocationRelativeTo(null);
+
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
 	    JPanel panel = new JPanel();    
@@ -61,12 +68,17 @@ public class NewUserGUI {
 	    roleLabel.setFont(LableFont);
 	    panel.add(roleLabel);
 	    
+	    roleButtonList = new JButton[RoleTypeLength];
+	    
 	    int startx = LabelStartx;
 	    for (int i = 0; i < RoleTypeLength; i++) {
 	    	JButton button = new JButton(RoleType.getDescription(i));
 	    	button.setBounds(startx,ButtonStarty,roleButtonWidth,ButtonHeight);
-		    button.setBorderPainted(false);
+	    	if(i != 0) {
+	    		button.setBorderPainted(false);
+	    	}
 	    	button.addActionListener(new roleChooseListener(button));
+	    	roleButtonList[i] = button;
 	    	panel.add(button);
 	    	startx = startx + roleButtonWidth + ButtonBounds;
 	    }
@@ -89,10 +101,10 @@ public class NewUserGUI {
 				userNameMessage.setVisible(true);
 			}
 			else {
-				User u = new User(userName,roleSelect);
+				User u = RoleType.getUserFactoryById(roleSelect).createUser(userName);
 				GameMap m = new GameMap();
-				GameInitializer gameInitializer = GameInitializer.getInstance(); 
-				gameInitializer.initializeGame(u,m);
+				GameInitializer gameInitializer = new GameInitializer(u, m); 
+				gameInitializer.initializeGame();
 			}
 			
 		}
@@ -108,6 +120,9 @@ public class NewUserGUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			roleSelect = RoleType.getId(e.getActionCommand());
+			for(JButton b:roleButtonList) {
+				b.setBorderPainted(false);
+			}
 			button.setBorderPainted(true);
 		}
 	}

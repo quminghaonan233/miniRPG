@@ -1,9 +1,20 @@
-package gameLoader;
+package user;
 
 
 import java.io.Serializable;
 
 public class User implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
+	protected String userName;
+	protected int roleType;
+	protected String imagePath;
+	
+	//角色初始化
+	public User(String userName,int roleType) {
+		this.userName = userName;
+		this.roleType = roleType;
+	}
 	
 	public String getUserName() {
 		return userName;
@@ -18,17 +29,6 @@ public class User implements Serializable{
 	}
 
 	public void setRoleType(int roleType) {
-		this.roleType = roleType;
-	}
-
-	private static final long serialVersionUID = 1L;
-	
-	private String userName;
-	private int roleType;
-	
-	//角色初始化
-	public User(String userName,int roleType) {
-		this.userName = userName;
 		this.roleType = roleType;
 	}
 	
