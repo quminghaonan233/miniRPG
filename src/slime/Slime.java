@@ -1,7 +1,9 @@
 package slime;
 
+import java.util.List;
 import java.util.Random;
 
+import state.State;
 import user.User;
 
 public class Slime {
@@ -39,8 +41,15 @@ public class Slime {
 	
 	protected double current_HP;
 	protected double current_MP;
+	protected List<State> stateList;
 	
 	
+	public List<State> getStateList() {
+		return stateList;
+	}
+	public void setStateList(List<State> stateList) {
+		this.stateList = stateList;
+	}
 	public double getCurrent_HP() {
 		return current_HP;
 	}

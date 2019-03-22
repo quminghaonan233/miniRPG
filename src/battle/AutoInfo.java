@@ -30,7 +30,7 @@ public class AutoInfo {
 		// 创建一个新计时器  
         Timer timer = new Timer();  
   
-        // 30秒 后执行该任务  
+        // 1.5秒 后执行该任务  
         timer.schedule(new TimerTask() {  
             public void run() {  
             	infoFrame.dispose();  

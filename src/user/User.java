@@ -3,11 +3,13 @@ package user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import Medicine.Medicine;
 import scroll.Scroll;
 import slime.Slime;
 import weapon.equip;
+import state.State;
 
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -15,7 +17,6 @@ public class User implements Serializable{
 	protected String userName;
 	protected int roleType;
 	protected String imagePath;
-	
 	
 	//ÒÑ×°±¸ÎäÆ÷
 	protected ArrayList<equip> equipList;
@@ -74,7 +75,15 @@ public class User implements Serializable{
 	
 	protected double current_HP;
 	protected double current_MP;
-	
+	protected State state;
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
 
 	public double getCurrent_HP() {
 		return current_HP;
@@ -390,4 +399,5 @@ public class User implements Serializable{
 		double slimeHP=slime.getCurrent_HP();
 		slime.setCurrent_HP(slimeHP>damage?slimeHP-damage:0);
 	}
+	
 }

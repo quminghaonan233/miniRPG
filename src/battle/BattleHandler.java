@@ -241,6 +241,7 @@ public class BattleHandler{
 									if(gameover==false) {
 										new AutoInfo("我 方 回 合") ;
 										bl.waitPro(1500);
+										userStateHandler();
 										buttonEnable = true;
 									}
 								}
@@ -285,6 +286,7 @@ public class BattleHandler{
 									enemyATKHandler();
 									if(gameover==false) {
 										new AutoInfo("我 方 回 合") ;
+										userStateHandler();
 										bl.waitPro(1500);
 										buttonEnable = true;
 									}
@@ -330,6 +332,7 @@ public class BattleHandler{
 									enemyATKHandler();
 									if(gameover==false) {
 										new AutoInfo("我 方 回 合") ;
+										userStateHandler();
 										bl.waitPro(1500);
 										buttonEnable = true;
 									}

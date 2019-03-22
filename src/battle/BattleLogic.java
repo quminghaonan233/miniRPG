@@ -3,6 +3,7 @@ package battle;
 import java.util.List;
 
 import slime.Slime;
+import state.StateType;
 import user.User;
 
 public class BattleLogic {
@@ -60,5 +61,11 @@ public class BattleLogic {
 			return false;
 		}
 		return true;
+	}
+	
+	public void userStateHandler(User user) {
+		if (user.getState().getStateType() == StateType.ÖÐ¶¾ && user.getState().getLastTime()>=1) {
+			user.getState().setLastTime(user.getState().getLastTime()-1);
+		}
 	}
 }
