@@ -39,9 +39,4 @@ public class AutoInfo {
         }, 1500);  
 	}
   
-    public static void main(String[] args) {  
-  
-        new AutoInfo("haha");
-    }  
-  
 }  
