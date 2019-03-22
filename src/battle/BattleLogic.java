@@ -36,6 +36,8 @@ public class BattleLogic {
 	
 	public void enemyATK(Slime slime,User user) {
 		slime.attack(user);
+		user.getState().setLastTime(1);
+		user.getState().setDamage(12);
 	}
 	
 	public void waitPro(int i) {
@@ -63,9 +65,15 @@ public class BattleLogic {
 		return true;
 	}
 	
-	public void userStateHandler(User user) {
-		if (user.getState().getStateType() == StateType.ÖĞ¶¾ && user.getState().getLastTime()>=1) {
-			user.getState().setLastTime(user.getState().getLastTime()-1);
+	public boolean isUserInPoison(User user) {
+		if (user.getState().getLastTime()>=1) {
+			return true;
 		}
+		return false;
+	}
+	
+	public void userInPoisonHandler(User user) {
+		user.getState().setLastTime(user.getState().getLastTime()-1);
+		user.setCurrent_HP(user.getCurrent_HP()-user.getState().getDamage());
 	}
 }

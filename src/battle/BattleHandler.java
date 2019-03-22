@@ -141,7 +141,7 @@ public class BattleHandler{
 		panel.add(nameLabel);
 		
 		stateLabel = new JLabel();
-		stateLabel.setText("状态");
+		stateLabel.setText("正 常");
 		stateLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 		stateLabel.setForeground(Color.gray);
 		stateLabel.setLocation(330,10);
@@ -175,7 +175,7 @@ public class BattleHandler{
 		panel.add(enameLabel);
 		
 		estateLabel = new JLabel();
-		estateLabel.setText("状态");
+		estateLabel.setText("正 常");
 		estateLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 		estateLabel.setForeground(Color.gray);
 		estateLabel.setLocation(730,10);
@@ -227,28 +227,7 @@ public class BattleHandler{
 					if (controlACK == false) {
 						updateStatePanel();
 					}else {
-						buttonEnable = false;
-						new Thread() {
-							@Override
-							public void run() {
-								userATKHandler();
-								updateStatePanel();
-								bl.waitPro(1000);
-								if(gameover==false) {
-									new AutoInfo("敌 方 回 合") ;
-									bl.waitPro(1500);
-									enemyATKHandler();
-									if(gameover==false) {
-										new AutoInfo("我 方 回 合") ;
-										bl.waitPro(1500);
-										userStateHandler();
-										buttonEnable = true;
-									}
-								}
-								controlACK = false;
-								controlNum = -1;
-							}
-						}.start();
+						turnBegin();
 					}
 				}
 			}
@@ -273,28 +252,7 @@ public class BattleHandler{
 					if (controlACK == false) {
 						updateStatePanel();
 					}else {
-						buttonEnable = false;
-						new Thread() {
-							@Override
-							public void run() {
-								userATKHandler();
-								updateStatePanel();
-								bl.waitPro(1000);
-								if(gameover==false) {
-									new AutoInfo("敌 方 回 合") ;
-									bl.waitPro(1500);
-									enemyATKHandler();
-									if(gameover==false) {
-										new AutoInfo("我 方 回 合") ;
-										userStateHandler();
-										bl.waitPro(1500);
-										buttonEnable = true;
-									}
-								}
-								controlACK = false;
-								controlNum = -1;
-							}
-						}.start();
+						turnBegin();
 					}
 				}
 			}
@@ -319,28 +277,7 @@ public class BattleHandler{
 					if (controlACK == false) {
 						updateStatePanel();
 					}else {
-						buttonEnable = false;
-						new Thread() {
-							@Override
-							public void run() {
-								userATKHandler();
-								updateStatePanel();
-								bl.waitPro(1000);
-								if(gameover==false) {
-									new AutoInfo("敌 方 回 合") ;
-									bl.waitPro(1500);
-									enemyATKHandler();
-									if(gameover==false) {
-										new AutoInfo("我 方 回 合") ;
-										userStateHandler();
-										bl.waitPro(1500);
-										buttonEnable = true;
-									}
-								}
-								controlACK = false;
-								controlNum = -1;
-							}
-						}.start();
+						turnBegin();
 					}
 				}
 			}
@@ -530,6 +467,7 @@ public class BattleHandler{
 				bl.waitPro(1000);
 				bl.enemyATK(slime, user);
 				updateStatePanel();
+				updateUserState();
 				bl.waitPro(1000);
 				if (bl.isFailure(user)) {
 					new AutoInfo("战 斗 失 败") ;
@@ -543,15 +481,22 @@ public class BattleHandler{
 	}
 	
 	private void updateStatePanel() {
-		stateLabel.setText("状态");
 		HPLabel.setText("生命 : " + (int)user.getCurrent_HP());
 		MPLabel.setText("魔法 : " + (int)user.getCurrent_MP());
 		
-		estateLabel.setText("状态");
 		eHPLabel.setText("生命 : " + (int)slime.getCurrent_HP());
 		eMPLabel.setText("魔法 : " + (int)slime.getCurrent_MP());
 		
 
+		battlePanel.updateUI();
+	}
+	
+	private void updateUserState() {
+		if (user.getState().getLastTime()>=1) {
+			stateLabel.setText("中 毒");
+		}else {
+			stateLabel.setText("正 常");
+		}
 		battlePanel.updateUI();
 	}
 	
@@ -588,11 +533,43 @@ public class BattleHandler{
 		}
 		return ii;
 	}
+	
+	private void turnBegin() {
+		buttonEnable = false;
+		new Thread() {
+			@Override
+			public void run() {
+				userATKHandler();
+				updateStatePanel();
+				bl.waitPro(1000);
+				
+				if(gameover==false) {
+					new AutoInfo("敌 方 回 合") ;
+					bl.waitPro(1500);
+					
+					enemyATKHandler();
+					
+					if(gameover==false) {
+						new AutoInfo("我 方 回 合") ;
+						bl.waitPro(1500);
+						if (bl.isUserInPoison(user)) {
+							bl.userInPoisonHandler(user);
+							updateUserState();
+							updateStatePanel();
+						}
+						buttonEnable = true;
+					}
+				}
+				controlACK = false;
+				controlNum = -1;
+			}
+		}.start();
+	}
 
 	
 	public static void main(String[] args) {
 		User user =new User("大魔王",2);
-		user.setCurrent_HP(100);
+		user.setCurrent_HP(10);
 		user.setP_ATK(20);
 		List<Slime> slimeList = new ArrayList<Slime>();
 		Slime slime1 = new GreenSlime();
