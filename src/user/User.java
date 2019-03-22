@@ -64,6 +64,14 @@ public class User implements Serializable{
 	//±©»÷
 	protected double CRT;
 	
+	protected double growHP;
+	protected double growMP;
+	protected double growP_ATK;
+	protected double growP_DEF;
+	protected double growM_ATK;
+	protected double growM_DEF;
+	
+	
 	protected double current_HP;
 	protected double current_MP;
 	
@@ -239,6 +247,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempHP += e.getHP();
 		}
+		tempHP += (this.getLV() - 1)*this.growHP+this.getSTRDecroted()*15;
 		return tempHP;
 	}
 
@@ -247,6 +256,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempMP += e.getMP();
 		}
+		tempMP += (this.getLV() - 1)*this.growMP+this.getINTDecroted()*6;
 		return tempMP;
 	}
 
@@ -255,6 +265,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempP_ATK += e.getP_ATK();
 		}
+		tempP_ATK += (this.getLV() - 1)*this.growP_ATK+this.getSTRDecroted()*1;
 		return tempP_ATK;
 	}
 
@@ -263,6 +274,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempP_DEF += e.getP_DEF();
 		}
+		tempP_DEF += (this.getLV() - 1)*this.growP_DEF+this.getSTRDecroted()*0.6;
 		return tempP_DEF;
 	}
 
@@ -271,6 +283,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempM_ATK += e.getM_ATK();
 		}
+		tempM_ATK += (this.getLV() - 1)*this.growM_ATK+this.getINTDecroted()*1;
 		return tempM_ATK;
 	}
 
@@ -279,6 +292,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempM_DEF += e.getM_DEF();
 		}
+		tempM_DEF += (this.getLV() - 1)*this.growM_DEF+this.getINTDecroted()*0.6;
 		return tempM_DEF;
 	}
 
@@ -365,7 +379,7 @@ public class User implements Serializable{
 	}
 	
 	public boolean isAlive() {
-		if(this.current_HP>0) {
+		if((int)this.current_HP>0) {
 			return true;
 		}
 		return false;

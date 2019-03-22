@@ -517,12 +517,10 @@ public class BattleHandler{
 	}
 	
 	private void updateStatePanel() {
-		nameLabel.setText(user.getUserName());
 		stateLabel.setText("×´Ì¬");
 		HPLabel.setText("ÉúÃü : " + (int)user.getCurrent_HP());
 		MPLabel.setText("Ä§·¨ : " + (int)user.getCurrent_MP());
 		
-		enameLabel.setText(slime.getSlimeName());
 		estateLabel.setText("×´Ì¬");
 		eHPLabel.setText("ÉúÃü : " + (int)slime.getCurrent_HP());
 		eMPLabel.setText("Ä§·¨ : " + (int)slime.getCurrent_MP());

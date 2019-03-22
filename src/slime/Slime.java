@@ -141,7 +141,7 @@ public class Slime {
 	}
 	
 	public boolean isAlive() {
-		if(this.current_HP>0) {
+		if((int)this.current_HP>0) {
 			return true;
 		}
 		return false;
