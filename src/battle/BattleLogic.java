@@ -1,5 +1,7 @@
 package battle;
 
+import java.util.List;
+
 import slime.Slime;
 import user.User;
 
@@ -32,15 +34,31 @@ public class BattleLogic {
 	}
 	
 	public void enemyATK(Slime slime,User user) {
-		
+		slime.attack(user);
 	}
 	
-	public void waitPro() {
+	public void waitPro(int i) {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(i);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isSuccess(List<Slime> slimeList) {
+		for (int i=0;i<slimeList.size();i++) {
+			if (slimeList.get(i).isAlive()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean isFailure(User user) {
+		if(user.isAlive()) {
+			return false;
+		}
+		return true;
 	}
 }

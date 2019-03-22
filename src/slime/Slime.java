@@ -1,5 +1,7 @@
 package slime;
 
+import user.User;
+
 public class Slime {
 	protected String imagePath;
 	protected int SlimeType;
@@ -13,7 +15,7 @@ public class Slime {
 	protected double MP;
 	
 	//等级
-	protected double LV;
+	protected int LV;
 	
 	//经验
 	protected double EXP;
@@ -30,7 +32,22 @@ public class Slime {
 	//魔法防御
 	protected double M_DEF;
 	
+	protected double current_HP;
+	protected double current_MP;
 	
+	
+	public double getCurrent_HP() {
+		return current_HP;
+	}
+	public void setCurrent_HP(double current_HP) {
+		this.current_HP = current_HP;
+	}
+	public double getCurrent_MP() {
+		return current_MP;
+	}
+	public void setCurrent_MP(double current_MP) {
+		this.current_MP = current_MP;
+	}
 	public String getSlimeName() {
 		return "史莱姆";
 	}
@@ -46,10 +63,10 @@ public class Slime {
 	public void setMP(double mP) {
 		MP = mP;
 	}
-	public double getLV() {
+	public int getLV() {
 		return LV;
 	}
-	public void setLV(double lV) {
+	public void setLV(int lV) {
 		LV = lV;
 	}
 	public double getEXP() {
@@ -124,9 +141,15 @@ public class Slime {
 	}
 	
 	public boolean isAlive() {
-		if(this.HP>0) {
+		if(this.current_HP>0) {
 			return true;
 		}
 		return false;
+	}
+	
+	public void attack(User user) {
+		double damage = this.getP_ATK()-user.getP_DEF();
+		double userHP=user.getCurrent_HP();
+		user.setCurrent_HP(userHP>damage?userHP-damage:0);
 	}
 }

@@ -32,7 +32,7 @@ public class User implements Serializable{
 	protected double MP;
 	
 	//等级
-	protected double LV;
+	protected int LV;
 	
 	//经验
 	protected double EXP;
@@ -64,6 +64,25 @@ public class User implements Serializable{
 	//暴击
 	protected double CRT;
 	
+	protected double current_HP;
+	protected double current_MP;
+	
+
+	public double getCurrent_HP() {
+		return current_HP;
+	}
+
+	public void setCurrent_HP(double current_HP) {
+		this.current_HP = current_HP;
+	}
+
+	public double getCurrent_MP() {
+		return current_MP;
+	}
+
+	public void setCurrent_MP(double current_MP) {
+		this.current_MP = current_MP;
+	}
 
 	public User() {
 		
@@ -127,11 +146,11 @@ public class User implements Serializable{
 		MP = mP;
 	}
 
-	public double getLV() {
+	public int getLV() {
 		return LV;
 	}
 
-	public void setLV(double lV) {
+	public void setLV(int lV) {
 		LV = lV;
 	}
 
@@ -345,9 +364,16 @@ public class User implements Serializable{
 		this.scrollPackage = scrollPackage;
 	}
 	
+	public boolean isAlive() {
+		if(this.current_HP>0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void attack(Slime slime) {
 		double damage = this.getP_ATKDecroted()-slime.getP_DEF();
-		double slimeHP=slime.getHP();
-		slime.setHP(slimeHP>damage?slimeHP-damage:0);
+		double slimeHP=slime.getCurrent_HP();
+		slime.setCurrent_HP(slimeHP>damage?slimeHP-damage:0);
 	}
 }
