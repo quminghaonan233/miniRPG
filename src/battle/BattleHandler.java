@@ -2,18 +2,13 @@ package battle;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +28,14 @@ public class BattleHandler{
 	private JPanel statePanel = null;
 	private JPanel characterPanel = null;
 	private JPanel controlPanel = null;
+	private JLabel nameLabel = null;
+	private JLabel stateLabel = null;
+	private JLabel HPLabel = null;
+	private JLabel MPLabel = null;
+	private JLabel enameLabel = null;
+	private JLabel estateLabel = null;
+	private JLabel eHPLabel = null;
+	private JLabel eMPLabel = null;
 	private JButton eButton1 = null;
 	private JButton eButton2 = null;
 	private JButton eButton3 = null;
@@ -41,6 +44,7 @@ public class BattleHandler{
 	private JButton skillButton2 = null;
 	private JButton skillButton3 = null;
 	private JButton skillButton4 = null;
+	private JLabel descLabel = null;
 	
 	private User user = null;
 	private List<Slime> slimeList = null;
@@ -49,6 +53,7 @@ public class BattleHandler{
 	private int controlNum = -1;
 
 	private BattleLogic bl = BattleLogic.getInstance();
+	private Lock lock = new ReentrantLock();
 	
 	public BattleHandler(User user, List<Slime> slimeList) {
 		this.user = user;
@@ -108,28 +113,28 @@ public class BattleHandler{
 	private void stateSet() {
 		JPanel panel = statePanel;
 		//self state
-		JLabel nameLabel = new JLabel();
+		nameLabel = new JLabel();
 		nameLabel.setText(user.getUserName());
 		nameLabel.setFont(new Font("Serif", Font.BOLD, 30));
 		nameLabel.setLocation(30,10);
 		nameLabel.setSize(200,30);
 		panel.add(nameLabel);
 		
-		JLabel stateLabel = new JLabel();
+		stateLabel = new JLabel();
 		stateLabel.setText("状态");
 		stateLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 		stateLabel.setLocation(330,10);
 		stateLabel.setSize(80,40);
 		panel.add(stateLabel);
 		
-		JLabel HPLabel = new JLabel();
+		HPLabel = new JLabel();
 		HPLabel.setText("生命 : " + (int)user.getHPDecroted());
 		HPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		HPLabel.setLocation(40,60);
 		HPLabel.setSize(240,50);
 		panel.add(HPLabel);
 		
-		JLabel MPLabel = new JLabel();
+		MPLabel = new JLabel();
 		MPLabel.setText("魔法 : " + (int)user.getMPDecroted());
 		MPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		MPLabel.setLocation(320,60);
@@ -137,7 +142,7 @@ public class BattleHandler{
 		panel.add(MPLabel);
 
 		//enemy state
-		JLabel enameLabel = new JLabel();
+		enameLabel = new JLabel();
 		enameLabel.setText(slime.getSlimeName());
 		enameLabel.setFont(new Font("Serif", Font.BOLD, 30));
 		enameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -145,21 +150,21 @@ public class BattleHandler{
 		enameLabel.setSize(200,30);
 		panel.add(enameLabel);
 		
-		JLabel estateLabel = new JLabel();
+		estateLabel = new JLabel();
 		estateLabel.setText("状态");
 		estateLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-		estateLabel.setLocation(830,10);
+		estateLabel.setLocation(730,10);
 		estateLabel.setSize(80,40);
 		panel.add(estateLabel);
 		
-		JLabel eHPLabel = new JLabel();
+		eHPLabel = new JLabel();
 		eHPLabel.setText("生命 : " + (int)slime.getHP());
 		eHPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		eHPLabel.setLocation(640,60);
 		eHPLabel.setSize(240,50);
 		panel.add(eHPLabel);
 		
-		JLabel eMPLabel = new JLabel();
+		eMPLabel = new JLabel();
 		eMPLabel.setText("魔法 : " + (int)slime.getMP());
 		eMPLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 		eMPLabel.setLocation(920,60);
@@ -186,17 +191,23 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				slime = slimeList.get(0);
-				if (controlNum != -1) {
+				if (controlNum == -1) {
+					slime = slimeList.get(0);
+					updateStatePanel();
+				}else {
 					buttonDisable();
-					userATKHandler();
-					panelRefresh();
-					bl.waitPro();
-					enemyATKHandler();
-					buttonEnable();
+					new Thread() {
+						@Override
+						public void run() {
+							userATKHandler();
+							updateStatePanel();
+							bl.waitPro();
+							enemyATKHandler();
+							controlNum = -1;
+							buttonEnable();
+						}
+					}.start();
 				}
-				panelRefresh();
-				controlNum = -1;
 			}
 		});
 		panel.add(eButton1);
@@ -215,12 +226,10 @@ public class BattleHandler{
 				if (controlNum != -1) {
 					buttonDisable();
 					userATKHandler();
-					panelRefresh();
-					bl.waitPro();
 					enemyATKHandler();
 					buttonEnable();
 				}
-				panelRefresh();
+				updateStatePanel();
 				controlNum = -1;
 			}
 		});
@@ -240,12 +249,12 @@ public class BattleHandler{
 				if (controlNum != -1) {
 					buttonDisable();
 					userATKHandler();
-					panelRefresh();
+					updateStatePanel();
 					bl.waitPro();
 					enemyATKHandler();
 					buttonEnable();
 				}
-				panelRefresh();
+				updateStatePanel();
 				controlNum = -1;
 			}
 		});
@@ -274,7 +283,7 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controlNum = 0;
-				panelRefresh();	
+				updateControlPanel();
 			}
 		});
 		panel.add(atkButton);
@@ -288,7 +297,7 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controlNum = 1;
-				panelRefresh();	
+				updateControlPanel();
 			}
 		});
 		panel.add(skillButton1);
@@ -302,7 +311,7 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controlNum = 2;
-				panelRefresh();	
+				updateControlPanel();
 			}
 		});
 		panel.add(skillButton2);
@@ -317,7 +326,7 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controlNum = 3;
-				panelRefresh();	
+				updateControlPanel();
 			}
 		});
 		panel.add(skillButton3);
@@ -331,12 +340,12 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controlNum = 4;
-				panelRefresh();	
+				updateControlPanel();
 			}
 		});
 		panel.add(skillButton4);
 		
-		JLabel descLabel = new JLabel();
+		descLabel = new JLabel();
 		if (controlNum == 0) {
 			descLabel.setText("普通攻击");
 		}else if (controlNum == 1) {
@@ -356,12 +365,6 @@ public class BattleHandler{
 		panel.add(descLabel);
 	}
 	
-	private void panelRefresh() {
-		battlePanel.removeAll();
-		wholeSet();
-		battlePanel.repaint();
-	}
-	
 	private void buttonDisable() {
 		eButton1.setEnabled(false);
 		eButton2.setEnabled(false);
@@ -371,6 +374,7 @@ public class BattleHandler{
 		skillButton2.setEnabled(false);
 		skillButton3.setEnabled(false);
 		skillButton4.setEnabled(false);
+		battlePanel.updateUI();
 	}
 	
 	private void buttonEnable() {
@@ -382,6 +386,7 @@ public class BattleHandler{
 		skillButton2.setEnabled(true);
 		skillButton3.setEnabled(true);
 		skillButton4.setEnabled(true);
+		battlePanel.updateUI();
 	}
 	
 	private void userATKHandler() {
@@ -389,25 +394,62 @@ public class BattleHandler{
 	}
 	
 	private void enemyATKHandler() {
-		for(int i = 0; i < slimeNum; i++) {
+		for (int i=0;i<slimeNum;i++) {
 			slime = slimeList.get(i);
+			updateStatePanel();
 			bl.waitPro();
 			bl.enemyATK(slime, user);
-			panelRefresh();
+			updateStatePanel();
 			bl.waitPro();
 		}
+	}
+	
+	private void updateStatePanel() {
+		nameLabel.setText(user.getUserName());
+		stateLabel.setText("状态");
+		HPLabel.setText("生命 : " + (int)user.getHPDecroted());
+		MPLabel.setText("魔法 : " + (int)user.getMPDecroted());
+		
+		enameLabel.setText(slime.getSlimeName());
+		estateLabel.setText("状态");
+		eHPLabel.setText("生命 : " + (int)slime.getHP());
+		eMPLabel.setText("魔法 : " + (int)slime.getMP());
+		
+
+		battlePanel.updateUI();
+	}
+	
+	private void updateControlPanel() {
+		if (controlNum == 0) {
+			descLabel.setText("普通攻击");
+		}else if (controlNum == 1) {
+			descLabel.setText("技能1");
+		}else if (controlNum == 2) {
+			descLabel.setText("技能2");
+		}else if (controlNum == 3) {
+			descLabel.setText("技能3");
+		}else if (controlNum == 4) {
+			descLabel.setText("技能4");
+		}
+
+		battlePanel.updateUI();
 	}
 		
 
 	
 	public static void main(String[] args) {
 		User user =new User("大魔王",2);
+		user.setHP(100);
+		user.setP_ATK(20);
 		List<Slime> slimeList = new ArrayList<Slime>();
 		Slime slime1 = new GreenSlime();
+		slime1.setHP(50);
 		slimeList.add(slime1);
 		Slime slime2 = new RedSlime();
+		slime2.setHP(51);
 		slimeList.add(slime2);
 		Slime slime3 = new GreenSlime();
+		slime3.setHP(52);
 		slimeList.add(slime3);
 		new BattleHandler(user, slimeList).start();
 	}

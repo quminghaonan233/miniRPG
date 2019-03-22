@@ -348,6 +348,6 @@ public class User implements Serializable{
 	public void attack(Slime slime) {
 		double damage = this.getP_ATKDecroted()-slime.getP_DEF();
 		double slimeHP=slime.getHP();
-		slime.setHP(damage>slimeHP?damage-slimeHP:0);
+		slime.setHP(slimeHP>damage?slimeHP-damage:0);
 	}
 }
