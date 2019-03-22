@@ -1,5 +1,7 @@
 package slime;
 
+import java.util.Random;
+
 import user.User;
 
 public class Slime {
@@ -7,6 +9,9 @@ public class Slime {
 	protected int SlimeType;
 	
 	protected String slimeName;
+	
+	protected int posX;
+	protected int posY;
 
 	//ÉúÃü
 	protected double HP;
@@ -116,29 +121,37 @@ public class Slime {
 		
 	}
 	
-	public int[] move(int slimeX,int slimeY,int userX,int userY) {
-		int[] result = new int[2];
-		if(Math.abs(slimeX - userX) >= Math.abs(slimeY-userY)) {
-			if(slimeX < userX) {
-				result[0] = slimeX + 1;
-			}
-			else {
-				result[0] = slimeX - 1;
-			}
-			result[1] = slimeY;
+	public int getPosX() {
+		return posX;
+	}
+	public int getPosY() {
+		return posY;
+	}
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+	public void setPosY(int posY) {
+		this.posY = posY;
+	}
+	
+	
+	public void move(int userX,int userY) {
+		Random r = new Random();
+		if(posX < userX) {
+			this.posX = posX + r.nextInt(2);
 		}
-		else {
-			if(slimeY < userY) {
-				result[1] = slimeY + 1;
-			}
-			else {
-				result[1] = slimeY - 1;
-			}
-			result[0] = slimeX;
+		else if(posX > userX){
+			this.posX = posX - r.nextInt(2);
+		}
+		if(posY < userY) {
+			this.posY = posY + r.nextInt(2);
+		}
+		else if(posY > userY) {
+			this.posY = posY - r.nextInt(2);
 		}	
 		
-		return result;
 	}
+	
 	
 	public boolean isAlive() {
 		if((int)this.current_HP>0) {

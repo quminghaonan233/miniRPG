@@ -13,5 +13,6 @@ public class Assassin extends User{
 		this.growP_DEF = 2;
 		this.growM_ATK = 2;
 		this.growM_DEF = 3;
+		this.LV = 1;
 	}
 }

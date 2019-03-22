@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,15 +17,16 @@ import javax.swing.JPanel;
 import MapLabel.EmptyLabel;
 import slime.Slime;
 import slime.SlimeType;
+import user.RoleType;
 import user.User;
 
 public class GameInitializer {
-	
-	private static ImageIcon emptyImageIcon = new ImageIcon(System.getProperty("user.dir") + "/resource/img/empty.png");
-	private static ImageIcon mixImageIcon = new ImageIcon(System.getProperty("user.dir") + "/resource/img/mixSlime.png");
-	private static ImageIcon startIcon = new ImageIcon(System.getProperty("user.dir") + "/resource/img/startPoint.jpg");
-	private static ImageIcon endIcon = new ImageIcon(System.getProperty("user.dir") + "/resource/img/endPoint.png");
 
+	private static String emptyImageIconPath = System.getProperty("user.dir") + "/resource/img/empty.png";
+	private static String mixImageIconPath = System.getProperty("user.dir") + "/resource/img/mixSlime.png";
+	private static String startIconPath = System.getProperty("user.dir") + "/resource/img/startPoint.jpg";
+	private static String endIconPath = System.getProperty("user.dir") + "/resource/img/endPoint.png";
+	
 	private final static int GUIWidth = 1200;
 	private final static int GUIHeight = 800;
 	private final static int startX = 20;
@@ -33,6 +35,7 @@ public class GameInitializer {
 	private final static int endY = 708;
 	private final static int imageWidth = (endX-startX)/GameMap.xSize;
 	private final static int imageHeight = (endY-startY)/GameMap.ySize;
+	private final static int AvatorLength = 80;
 	
 	private User user;
 	private GameMap gameMap;
@@ -40,8 +43,11 @@ public class GameInitializer {
 	private int userY;
 	
 	private JFrame frame;
+	private JPanel mapPanel;
+	private JPanel userPanel;
 	
 	private JLabel[][] labelList;
+	private String [][] iconPathList;
 	
 	public GameInitializer(User u,GameMap m) {
 		this.user = u;
@@ -53,19 +59,29 @@ public class GameInitializer {
 	    
 	    frame.setSize(GUIWidth, GUIHeight);
 	    frame.setLocationRelativeTo(null);
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    
-        JPanel panel = new JPanel();    
-        placeComponnets(panel);
-        frame.add(panel);
-	    
-	    
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+	    frame.setLayout(null);
+		mapPanel = new JPanel(); 
+		frame.add(mapPanel);
+        
+		userPanel = new JPanel();
+//		userPanel.setBackground(Color.RED);
+//		userPanel.setOpaque(true);
+
+		frame.add(userPanel);
+		frame.setVisible(true);
+
 	}
 	
-	private void placeComponnets(JPanel panel) {
-        panel.setLayout(null);
+	private void placeMapPanel() { 
+		System.out.println("startPlaceComponent");
+  
+		mapPanel.removeAll();
+		mapPanel.setBounds(0,0,800,800);
+		mapPanel.setLayout(null);
 
 		labelList = new JLabel[GameMap.xSize][GameMap.ySize];
+		iconPathList = new String[GameMap.xSize][GameMap.ySize];
 		EmptyLabel l = new EmptyLabel();
 		for(int i = 0 ;i<GameMap.xSize;i++) {
 			for(int j = 0; j<GameMap.ySize;j++) {
@@ -75,9 +91,52 @@ public class GameInitializer {
 				temp.setBounds(x1,y1,imageWidth,imageHeight);
 				temp.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 				labelList[i][j] = temp;
-				panel.add(temp);
+				iconPathList[i][j] = emptyImageIconPath;
+				mapPanel.add(temp);
 			}
 		}
+
+	}
+	
+	private void placeUserPanel() {
+		userPanel.removeAll();
+		userPanel.setBounds(800, 0, 400, 800);
+		userPanel.setLayout(null);
+
+		ImageIcon userAvator = new ImageIcon(user.getImagePath());
+		userAvator.setImage(userAvator.getImage().getScaledInstance(AvatorLength,AvatorLength,Image.SCALE_DEFAULT));
+		JLabel userAvatorLabel = new JLabel();
+		userAvatorLabel.setIcon(userAvator);
+		userAvatorLabel.setBounds(20, 20, 80, 80);
+		userPanel.add(userAvatorLabel);
+		
+		JLabel userNameLabel = new JLabel("角色名: "+ user.getUserName());
+		userNameLabel.setBounds(120,20,100,20);
+		userPanel.add(userNameLabel);
+		
+		JLabel userRoleTypeLabel = new JLabel("职业: "+ RoleType.getDescription(user.getRoleType()));
+		userRoleTypeLabel.setBounds(120,50,100,20);
+		userPanel.add(userRoleTypeLabel);
+		
+		JLabel userLevelLabel = new JLabel("角色等级: "+ user.getLV());
+		userLevelLabel.setBounds(120,80,100,20);
+		userPanel.add(userLevelLabel);
+		
+//		JLabel userHPLabel = new JLabel("生命值: "+ user.getCurrent_HP() + "/" + user.getHPDecroted());
+//		userHPLabel.setBounds(220,20,100,20);
+//		userPanel.add(userHPLabel);
+//		
+//		JLabel userMPLabel = new JLabel("魔法值: "+ user.getCurrent_MP() + "/" + user.getMPDecroted());
+//		userMPLabel.setBounds(220,50,100,20);
+//		userPanel.add(userMPLabel);
+//		
+//		JLabel userExpLabel = new JLabel("经验: "+ user.getEXP() + "/100");
+//		userExpLabel.setBounds(220,80,100,20);
+//		userPanel.add(userExpLabel);
+		
+		
+		
+
 	}
 	
 	
@@ -86,87 +145,85 @@ public class GameInitializer {
 	}
 	
 	public void refresh() {
+		placeMapPanel();
+		placeUserPanel();
 		refreshStartEndPoint();
 		refreshSlime();
 		refreshUser();
-		frame.setVisible(true);
+		mapPanel.repaint();
+		nextLevelTrigger();
 		FightTrigger();
 	}
 	
 	private void refreshStartEndPoint() {
-		startIcon.setImage(startIcon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
-		labelList[gameMap.getStartX()][gameMap.getStartY()].setIcon(startIcon);
-		endIcon.setImage(endIcon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
-		labelList[gameMap.getEndX()][gameMap.getEndY()].setIcon(endIcon);	
+		iconPathList[gameMap.getStartX()][gameMap.getStartY()] = startIconPath;
+		iconPathList[gameMap.getEndX()][gameMap.getEndY()] = endIconPath;	
 	}
 	
 	
 	private void refreshUser() {
+		System.out.println("startrefreshUser");
+
 		ImageIcon userIcon = new ImageIcon(user.getImagePath());
 		userIcon.setImage(userIcon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
 		labelList[userX][userY].setIcon(userIcon);
 	}
 	
+	private void nextLevelTrigger() {
+		if(userX == gameMap.getEndX() && userY == gameMap.getEndY()) {
+			this.gameMap = new GameMap(gameMap.getLevel() + 1);
+			this.userX = 0;
+			this.userY = 0;
+			refresh();
+		}
+	}
+	
 	private void FightTrigger() {
+		ArrayList<Slime> fightSlime = new ArrayList<Slime>();
+		System.out.println(gameMap.getSlimeList().size());
+		for(Slime s:gameMap.getSlimeList()) {
+			if(s.getPosX() == userX && s.getPosY() == userY) {
+				fightSlime.add(s);
+			}
+		}
+		for(Slime s:fightSlime) {
+			gameMap.getSlimeList().remove(s);
+		}
+		System.out.println(gameMap.getSlimeList().size());
+		if(fightSlime.size() > 0) {
+			//jump to fight
+			System.out.println("触发战斗");
+		}
 		
 	}
 	
 	private void refreshSlime() {
-		Area[][] areaMap = gameMap.getAreaMap();
+		System.out.println("startrefreshSlime");
+		for(Slime s:gameMap.getSlimeList()) {
+			if(iconPathList[s.getPosX()][s.getPosY()] .equals(emptyImageIconPath)) {
+				iconPathList[s.getPosX()][s.getPosY()] = s.getImagePath();
+			}
+			else {
+				if(!iconPathList[s.getPosX()][s.getPosY()].equals(s.getImagePath())) {
+					iconPathList[s.getPosX()][s.getPosY()] = mixImageIconPath;
+				}
+			}
+		}
 		for(int i = 0 ;i<GameMap.xSize;i++) {
 			for(int j = 0; j<GameMap.ySize;j++) {
-				if(labelList[i][j].getIcon() == null) {
-					if(areaMap[i][j] == null || areaMap[i][j].getSlimeList().size() <= 0) {
-						emptyImageIcon.setImage(emptyImageIcon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
-						labelList[i][j].setIcon(emptyImageIcon);
-					}
-					else {
-						if(!sameSlime(areaMap[i][j].getSlimeList())) {
-							mixImageIcon.setImage(mixImageIcon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
-							labelList[i][j].setIcon(mixImageIcon);
-						}
-						else {
-							ImageIcon slimeIcon = new ImageIcon(areaMap[i][j].getSlimeList().get(0).getImagePath());
-							slimeIcon.setImage(slimeIcon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
-							labelList[i][j].setIcon(slimeIcon);
-						}
-					}
-				}
+				ImageIcon icon = new ImageIcon(iconPathList[i][j]);
+				icon.setImage(icon.getImage().getScaledInstance(imageWidth,imageHeight,Image.SCALE_DEFAULT));
+				labelList[i][j].setIcon(icon);
 			}
 		}
-	}
-	
-	public boolean sameSlime(ArrayList<Slime> slimeList) {
-		if(slimeList.size() > 1) {
-			int type = slimeList.get(0).getSlimeType();
-			for(Slime s:slimeList) {
-				if(s.getSlimeType() != type) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 	
 	
 	public void slimeMove() {
-		Area[][] areaMap = gameMap.getAreaMap();
-		Area[][] newAreaMap = new Area[GameMap.xSize][GameMap.ySize];
-		
-		for(int i = 0 ;i < GameMap.xSize;i++) {
-			for(int j = 0;j < GameMap.ySize;j++) {
-				if(areaMap[i][j] != null && areaMap[i][j].getSlimeList().size() > 0) {
-					for(Slime s:areaMap[i][j].getSlimeList()) {
-						int[] moveResult = s.move(i,j,userX,userY);
-						if(newAreaMap[moveResult[0]][moveResult[1]] == null) {
-							newAreaMap[moveResult[0]][moveResult[1]] = new Area();
-						}
-						newAreaMap[moveResult[0]][moveResult[1]].getSlimeList().add(s);
-					}
-				}
-			}
+		ArrayList<Slime> slimeList = gameMap.getSlimeList();
+		for(Slime s:slimeList) {
+			s.move(userX, userY);
 		}
-		areaMap = newAreaMap;
 	}
 	
 	public class KeyBoardFrame extends JFrame {

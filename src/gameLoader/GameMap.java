@@ -23,7 +23,7 @@ public class GameMap implements Serializable{
 
 	private int endY;
 	
-	private Area [][] AreaMap;
+	private ArrayList<Slime> slimeList;
 	
 	
 	//用于初始化开始地图
@@ -33,7 +33,7 @@ public class GameMap implements Serializable{
 	
 	public GameMap(int level) {
 		this.level = level;
-		this.AreaMap = new Area[xSize][ySize];
+		this.slimeList = new ArrayList<Slime>();
 		initialStartEnd();		
 		initialSlime();
 	}
@@ -54,12 +54,7 @@ public class GameMap implements Serializable{
 			SlimeFactory s = SlimeType.getFactory(slimeType);
 			int x = r.nextInt(xSize);
 			int y = r.nextInt(ySize);
-//			System.out.println(x+";"+y+";"+slimeType);
-			if(AreaMap[x][y] == null) {
-				AreaMap[x][y] = new Area();
-			}
-			ArrayList <Slime> slimeList = AreaMap[x][y].getSlimeList();
-			slimeList.add(s.createSlime());			
+			this.slimeList.add(s.createSlime(x,y));			
 		}
 		
 	}
@@ -103,12 +98,14 @@ public class GameMap implements Serializable{
 	public void setEndY(int endY) {
 		this.endY = endY;
 	}
-
-	public Area[][] getAreaMap() {
-		return AreaMap;
+	
+	public ArrayList<Slime> getSlimeList() {
+		return slimeList;
 	}
 
-	public void setAreaMap(Area[][] areaMap) {
-		AreaMap = areaMap;
+	public void setSlimeList(ArrayList<Slime> slimeList) {
+		this.slimeList = slimeList;
 	}
+	
+
 }
