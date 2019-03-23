@@ -62,7 +62,7 @@ public class GameInitializer {
 	private JButton useButton;
 	private JButton saveButton;
 	
-	private JFrame frame;
+	public JFrame frame;
 	private JPanel mapPanel;
 	private JPanel userPanel;
 	
@@ -414,7 +414,9 @@ public class GameInitializer {
 		if(fightSlime.size() > 0) {
 			//jump to fight
 			System.out.println("´¥·¢Õ½¶·");
-			new BattleHandler(frame, user, fightSlime.subList(0, Math.min(3, fightSlime.size()))).start();
+			frame.setVisible(false);
+			new BattleHandler(this, user, fightSlime.subList(0, Math.min(3, fightSlime.size())));
+
 		}
 		
 	}
