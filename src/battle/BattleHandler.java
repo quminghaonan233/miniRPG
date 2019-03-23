@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import gameLoader.GameLoaderUtil;
 import skill.activeSkill;
 import slime.GreenSlime;
 import slime.RedSlime;
@@ -37,7 +38,6 @@ public class BattleHandler{
 	private String skill4_path = "resource/img/b_skill4.png";
 	
 	private JFrame battleFrame = null;
-	private JFrame mainFrame = null;
 	private JPanel battlePanel = null;
 	private JPanel statePanel = null;
 	private JPanel characterPanel = null;
@@ -67,13 +67,13 @@ public class BattleHandler{
 	private JButton slimeButton = null;
 	private int controlNum = -1;
 	private boolean controlACK = false;
-	private boolean gameover = false;
+	public boolean gameover = false;
 	private boolean buttonEnable = true;
 
 	private BattleLogic bl = BattleLogic.getInstance();
+	private GameLoaderUtil gl = GameLoaderUtil.getInstance();
 	
-	public BattleHandler(JFrame mainFrame, User user, List<Slime> slimeList) {
-		this.mainFrame = mainFrame;
+	public BattleHandler(User user, List<Slime> slimeList) {
 		this.user = user;
 		this.slimeList = slimeList;
 		this.slimeNum = slimeList.size();
@@ -86,7 +86,6 @@ public class BattleHandler{
 	
 	//地图初始化
 	private void mapInit() {
-		mainFrame.setVisible(false);
 		battleFrame = new JFrame("Battle");
 		battleFrame.setSize(GUIWidth, GUIHeight);
 		battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -544,7 +543,6 @@ public class BattleHandler{
 		gameover = true;
 		bl.waitPro(1000);
 		battleFrame.dispose();
-		mainFrame.setVisible(true);
 	}
 	
 	private void gameoverWithSuccess() {
@@ -552,8 +550,17 @@ public class BattleHandler{
 		new AutoInfo("战 斗 胜 利") ;
 		gameover = true;
 		bl.waitPro(1000);
+		getSlimeEquip();
+		gl.PackageCombine(user.getEquipList());
 		battleFrame.dispose();
-		mainFrame.setVisible(true);
+		
+	}
+	
+	//获得slime装备
+	private void getSlimeEquip() {
+		for(Slime s: slimeList) {
+			user.getEquipList().add(s.getEquip());
+		}
 	}
 	
 	//用户中毒处理
@@ -723,7 +730,7 @@ public class BattleHandler{
 //		slime3.setCurrent_HP(52);
 //		slime3.setP_ATK(10);
 //		slimeList.add(slime3);
-		new BattleHandler(new JFrame(),user, slimeList).start();
+		new BattleHandler(user, slimeList).start();
 	}
 	
 }
