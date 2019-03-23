@@ -177,10 +177,14 @@ public class GameInitializer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				equipSelect = 0;
-				packageSelect = -1;
-				showDropOption();
-				frame.requestFocus();
+				setButtonDisable();
+				if(getEquip(0) != null) {
+					equipSelect = 0;
+					packageSelect = -1;
+					showDropOption();
+					frame.requestFocus();
+				}
+					
 			}
 		});
 		userPanel.add(weaponButton);
@@ -194,10 +198,13 @@ public class GameInitializer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				equipSelect = 1;
-				packageSelect = -1;
-				showDropOption();
-				frame.requestFocus();
+				setButtonDisable();
+				if(getEquip(1) != null) {
+					equipSelect = 1;
+					packageSelect = -1;
+					showDropOption();
+					frame.requestFocus();
+				}
 			}
 		});
 		userPanel.add(armorButton);
@@ -211,11 +218,14 @@ public class GameInitializer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				equipSelect = 2;
-				packageSelect = -1;
-				showDropOption();
-				frame.requestFocus();
+				setButtonDisable();
+				if(getEquip(2) != null) {
+					equipSelect = 2;
+					packageSelect = -1;
+					showDropOption();
+					frame.requestFocus();
+				}
+
 			}
 		});
 		userPanel.add(ornamentButton);
@@ -228,7 +238,7 @@ public class GameInitializer {
 		for(int i = 0;i < 9;i++) {
 			JButton tempButton = new JButton();
 			String path = "";
-			if(user.getEquipList().size() > i) {
+			if(user.getPackageList().size() > i) {
 				path = user.getPackageList().get(i).getImagePath();
 			}
 			ImageIcon packageIcon = new ImageIcon(path);
@@ -379,9 +389,7 @@ public class GameInitializer {
 		if(fightSlime.size() > 0) {
 			//jump to fight
 			System.out.println("´¥·¢Õ½¶·");
-			frame.setVisible(false);
 			new BattleHandler(user, fightSlime.subList(0, Math.min(3, fightSlime.size()))).start();
-//			frame.setVisible(true);
 		}
 		
 	}
@@ -425,13 +433,17 @@ public class GameInitializer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(equipSelect >= 0) {
+				double HPPercent = user.getCurrent_HP()/user.getHPDecroted();
+				double MPPercent = user.getCurrent_MP()/user.getMPDecroted();
 				if (user.getPackageList().size() >= 9) {
 					user.getEquipList().remove(getEquip(equipSelect));
 				}
 				else {
-					user.getEquipList().remove(getEquip(equipSelect));
 					user.getPackageList().add(getEquip(equipSelect));
+					user.getEquipList().remove(getEquip(equipSelect));
 				}
+				user.setCurrent_HP(Math.ceil(HPPercent*user.getHPDecroted()));
+				user.setCurrent_MP(Math.ceil(MPPercent*user.getMPDecroted()));
 			}
 			else {
 				if(user.getPackageList().size()>packageSelect) {
@@ -448,24 +460,46 @@ public class GameInitializer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			equip eq = user.getPackageList().get(packageSelect);
-			if(eq instanceof Weapon && getEquip(0) != null) {
-				user.getPackageList().remove(packageSelect);
-				user.getPackageList().add(getEquip(0));
-				user.getEquipList().remove(getEquip(0));
-				user.getEquipList().add(eq);
+			double HPPercent = user.getCurrent_HP()/user.getHPDecroted();
+			double MPPercent = user.getCurrent_MP()/user.getMPDecroted();
+			if(eq instanceof Weapon) {
+				if(getEquip(0) != null) {
+					user.getPackageList().remove(packageSelect);
+					user.getPackageList().add(getEquip(0));
+					user.getEquipList().remove(getEquip(0));
+					user.getEquipList().add(eq);
+				}
+				else {
+					user.getEquipList().add(eq);
+					user.getPackageList().remove(packageSelect);
+				}
 			}
-			else if(eq instanceof Armor && getEquip(1) != null) {
-				user.getPackageList().remove(packageSelect);
-				user.getPackageList().add(getEquip(1));
-				user.getEquipList().remove(getEquip(1));
-				user.getEquipList().add(eq);
+			else if(eq instanceof Armor) {
+				if(getEquip(1) != null) {
+					user.getPackageList().remove(packageSelect);
+					user.getPackageList().add(getEquip(1));
+					user.getEquipList().remove(getEquip(1));
+					user.getEquipList().add(eq);
+				}
+				else {
+					user.getEquipList().add(eq);
+					user.getPackageList().remove(packageSelect);
+				}
 			}
-			else if(eq instanceof Ornament && getEquip(2) != null) {
-				user.getPackageList().remove(packageSelect);
-				user.getPackageList().add(getEquip(2));
-				user.getEquipList().remove(getEquip(2));
-				user.getEquipList().add(eq);
+			else if(eq instanceof Ornament) {
+				if(getEquip(2) != null) {
+					user.getPackageList().remove(packageSelect);
+					user.getPackageList().add(getEquip(2));
+					user.getEquipList().remove(getEquip(2));
+					user.getEquipList().add(eq);
+				}
+				else {
+					user.getEquipList().add(eq);
+					user.getPackageList().remove(packageSelect);
+				}
 			}
+			user.setCurrent_HP(Math.ceil(HPPercent*user.getHPDecroted()));
+			user.setCurrent_MP(Math.ceil(MPPercent*user.getMPDecroted()));
 			refresh();
 		}
 		
@@ -497,8 +531,8 @@ public class GameInitializer {
 			packageSelect = this.packageId;
 			equipSelect = -1;
 			setButtonDisable();
-			if(user.getEquipList().size() > packageId) {
-				if(user.getEquipList().get(packageId) instanceof Medicine) {
+			if(user.getPackageList().size() > packageId) {
+				if(user.getPackageList().get(packageId) instanceof Medicine) {
 					dropButton.setEnabled(true);
 					useButton.setEnabled(true);
 				}

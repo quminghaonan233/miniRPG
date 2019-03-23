@@ -6,5 +6,6 @@ public class Killer extends Weapon{
 		super();
 		this.setP_ATK(40);
 		this.setSTR(10);
+		this.setImagePath(System.getProperty("user.dir") + "/resource/img/Killer.png");
 	}
 }
