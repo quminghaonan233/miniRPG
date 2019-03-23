@@ -83,6 +83,7 @@ public class BattleHandler{
 		mapInit();
 	}
 	
+	//地图初始化
 	private void mapInit() {
 		new AutoInfo("战 斗 开 始") ;
 		bl.waitPro(1500);
@@ -99,8 +100,10 @@ public class BattleHandler{
 		
 		battleFrame.add(battlePanel);
 		battleFrame.setVisible(true);
+		battleFrame.requestFocus();
 	}
 	
+	//战斗整体panel
 	private void wholeSet() {
 		JPanel panel = battlePanel;
 		statePanel = new JPanel();
@@ -129,6 +132,7 @@ public class BattleHandler{
 		
 	}
 	
+	//状态panel
 	private void stateSet() {
 		JPanel panel = statePanel;
 		//self state
@@ -199,6 +203,7 @@ public class BattleHandler{
 		panel.add(eMPLabel);
 	}
 	
+	//人物panel
 	private void characterSet() {
 		JPanel panel = characterPanel;
 		JLabel userLabel = new JLabel();
@@ -296,6 +301,7 @@ public class BattleHandler{
 		
 	}
 	
+	//控制panel
 	private void controlSet() {
 		JPanel panel = controlPanel;
 		atkButton = new JButton();
@@ -429,6 +435,7 @@ public class BattleHandler{
 		panel.add(descLabel);
 	}
 	
+	//获取slime按钮
 	private JButton getSlimeButton(int i) {
 		if(i==1) {
 			return eButton1;
@@ -440,62 +447,51 @@ public class BattleHandler{
 		return null;
 	}
 	
-	private void userATKHandler() {
-		slimeButton.setIcon(getSlimeIcon(2));
-		bl.waitPro(1000);
-		bl.userATK(user, slime, controlNum);
-		if (!slime.isAlive()) {
-			slimeButton.setIcon(getSlimeIcon(4));
-		}else {
-			slimeButton.setIcon(getSlimeIcon(1));
-		}
-		if(bl.isSuccess(slimeList)) {
-			bl.waitPro(1000);
-			gameoverWithSuccess();
-		}
-		
-	}
-	
-	private void enemyATKHandler() {
-		for (int i=0;i<slimeNum;i++) {
-			slime = slimeList.get(i);
-			if(slime.isAlive()) {
-				getSlimeButton(i+1).setIcon(getSlimeIcon(3));
-				updateStatePanel();
-				bl.waitPro(1000);
-				bl.enemyATK(slime, user);
-				updateStatePanel();
-				updateUserState();
-				bl.waitPro(1000);
-				if (bl.isFailure(user)) {
-					gameoverWithFailure();
-					break;
-				}
-				getSlimeButton(i+1).setIcon(getSlimeIcon(1));
-			}
-		}
-	}
-	
+
+	//显示面板更新
 	private void updateStatePanel() {
 		HPLabel.setText("生命 : " + (int)user.getCurrent_HP());
 		MPLabel.setText("魔法 : " + (int)user.getCurrent_MP());
 		
 		eHPLabel.setText("生命 : " + (int)slime.getCurrent_HP());
 		eMPLabel.setText("魔法 : " + (int)slime.getCurrent_MP());
+		updateUserState();
+		updateSlimeState();
 		
 
 		battlePanel.updateUI();
 	}
 	
+	//用户状态显示
 	private void updateUserState() {
-		if (user.getState().getLastTime()>=1) {
+		if (user.getPoison().getLastTime()>=1) {
 			stateLabel.setText("中 毒");
 		}else {
 			stateLabel.setText("正 常");
 		}
-		battlePanel.updateUI();
 	}
 	
+	//slime状态显示
+	private void updateSlimeState() {
+		StringBuilder state = new StringBuilder("");
+		
+		if (slime.getStateList()[0].getLastTime()>=1) {
+			state.append("中 毒  ");
+		}
+		if (slime.getStateList()[1].getLastTime()>=1) {
+			state.append("沉 默  ");
+		}
+		if (slime.getStateList()[2].getLastTime()>=1) {
+			state.append("眩 晕  ");
+		}
+		if(state.length()==0) {
+			estateLabel.setText("正 常");
+		}else {
+			estateLabel.setText(state.toString());
+		}
+	}
+	
+	//技能描述
 	private void updateControlPanel() {
 		if (controlNum == 0) {
 			descLabel.setText("普通攻击");
@@ -512,6 +508,7 @@ public class BattleHandler{
 		battlePanel.updateUI();
 	}		
 	
+	//slime状态
 	private ImageIcon getSlimeIcon(int i) {
 		ImageIcon ii = null;
 		if (i==1) {
@@ -530,6 +527,7 @@ public class BattleHandler{
 		return ii;
 	}
 	
+	//战斗结束
 	private void gameoverWithFailure() {
 		new AutoInfo("战 斗 失 败") ;
 		gameover = true;
@@ -542,10 +540,10 @@ public class BattleHandler{
 		battleFrame.dispose();
 	}
 	
+	//用户中毒处理
 	private void userInpoisonHandler() {
 		if (bl.isUserInPoison(user)) {
 			bl.userInPoisonInvoker(user);
-			updateUserState();
 			updateStatePanel();
 			if(bl.isFailure(user)) {
 				bl.waitPro(1000);
@@ -554,6 +552,27 @@ public class BattleHandler{
 		}
 	}
 	
+	//slime中毒处理
+	private void slimeInpoisonHandler() {
+		if (bl.isSlimeInPoison(slime)) {
+			bl.slimeInPoisonInvoker(slime);
+			updateStatePanel();
+		}
+	}
+	
+	//slime眩晕处理
+	private void SlimeInVertigoHandler() {
+		bl.slimeInVertigoInvoker(slime);
+		updateStatePanel();
+	}
+	
+	//slime沉默处理
+	private void SlimeInSlienceHandler() {
+		bl.slimeInSilenceInvoker(slime);
+		updateStatePanel();
+	}
+	
+	//回合开始
 	private void turnBegin() {
 		buttonEnable = false;
 		new Thread() {
@@ -580,6 +599,69 @@ public class BattleHandler{
 				controlNum = -1;
 			}
 		}.start();
+	}
+	
+	//user回合操作
+	private void userATKHandler() {
+		slimeButton.setIcon(getSlimeIcon(2));
+		bl.waitPro(1000);
+		bl.userATK(user, slime, controlNum);
+		if (!slime.isAlive()) {
+			slimeButton.setIcon(getSlimeIcon(4));
+		}else {
+			slimeButton.setIcon(getSlimeIcon(1));
+		}
+		if(bl.isSuccess(slimeList)) {
+			bl.waitPro(1000);
+			gameoverWithSuccess();
+		}
+		
+	}
+
+	//slime回合操作
+	private void enemyATKHandler() {
+		for (int i=0;i<slimeNum;i++) {
+			slime = slimeList.get(i);
+			if(slime.isAlive()) {
+				getSlimeButton(i+1).setIcon(getSlimeIcon(3));
+				updateStatePanel();
+				bl.waitPro(200);
+
+				//中毒处理
+				slimeInpoisonHandler();
+				if (!slime.isAlive()) {
+					getSlimeButton(i+1).setIcon(getSlimeIcon(4));
+					bl.waitPro(1000);
+					if(bl.isSuccess(slimeList)) {
+						gameoverWithSuccess();
+						break;
+					}
+					continue;
+				}
+				
+				//眩晕处理
+				if(bl.isSlimeInVertigo(slime)) {
+					SlimeInVertigoHandler();
+				}
+				
+				bl.waitPro(1000);
+				bl.enemyATK(slime, user);
+				
+				updateStatePanel();
+				
+				bl.waitPro(1000);
+				if (bl.isFailure(user)) {
+					gameoverWithFailure();
+					break;
+				}
+				getSlimeButton(i+1).setIcon(getSlimeIcon(1));
+				
+				//沉默处理
+				if(bl.isSlimeInSilence(slime)) {
+					SlimeInSlienceHandler();
+				}
+			}
+		}
 	}
 
 	

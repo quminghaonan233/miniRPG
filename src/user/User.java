@@ -70,14 +70,14 @@ public class User implements Serializable{
 	
 	protected double current_HP;
 	protected double current_MP;
-	protected State state = new State(StateType.ÖÐ¶¾,0,0);
+	protected State poison = new State(StateType.ÖÐ¶¾,0,0);
 
-	public State getState() {
-		return state;
+	public State getPoison() {
+		return poison;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setPoison(State poison) {
+		this.poison = poison;
 	}
 
 	public double getCurrent_HP() {
