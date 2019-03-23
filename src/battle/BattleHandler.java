@@ -15,9 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import skill.activeSkill;
 import slime.GreenSlime;
 import slime.RedSlime;
 import slime.Slime;
+import user.Assassin;
 import user.User;
 
 public class BattleHandler{
@@ -229,7 +231,7 @@ public class BattleHandler{
 					if (controlACK == false) {
 						updateStatePanel();
 					}else {
-						turnBegin();
+						magicJudge();
 					}
 				}
 			}
@@ -254,7 +256,7 @@ public class BattleHandler{
 					if (controlACK == false) {
 						updateStatePanel();
 					}else {
-						turnBegin();
+						magicJudge();
 					}
 				}
 			}
@@ -279,7 +281,7 @@ public class BattleHandler{
 					if (controlACK == false) {
 						updateStatePanel();
 					}else {
-						turnBegin();
+						magicJudge();
 					}
 				}
 			}
@@ -333,7 +335,7 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
+					if(bl.judgeSkillType(user.getSkillList()[0]) == 0 || user.getSkillList()[0].getSkillLevel() == 0) {
 						controlACK = false;
 					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
 						controlNum = 1;
@@ -362,9 +364,9 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
+					if(bl.judgeSkillType(user.getSkillList()[1]) == 0 || user.getSkillList()[1].getSkillLevel() == 0) {
 						controlACK = false;
-					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
+					}else if(bl.judgeSkillType(user.getSkillList()[1]) == 1){
 						controlNum = 2;
 						turnBegin();
 					}else {
@@ -392,9 +394,9 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
+					if(bl.judgeSkillType(user.getSkillList()[2]) == 0 || user.getSkillList()[2].getSkillLevel() == 0) {
 						controlACK = false;
-					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
+					}else if(bl.judgeSkillType(user.getSkillList()[2]) == 1){
 						controlNum = 3;
 						turnBegin();
 					}else {
@@ -421,9 +423,9 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
+					if(bl.judgeSkillType(user.getSkillList()[3]) == 0 || user.getSkillList()[3].getSkillLevel() == 0) {
 						controlACK = false;
-					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
+					}else if(bl.judgeSkillType(user.getSkillList()[3]) == 1){
 						controlNum = 4;
 						turnBegin();
 					}else {
@@ -441,17 +443,7 @@ public class BattleHandler{
 		panel.add(skillButton4);
 		
 		descLabel = new JLabel();
-		if (controlNum == 0) {
-			descLabel.setText("普通攻击");
-		}else if (controlNum == 1) {
-			descLabel.setText("技能1描述");
-		}else if (controlNum == 2) {
-			descLabel.setText("技能2描述");
-		}else if (controlNum == 3) {
-			descLabel.setText("技能3描述");
-		}else if (controlNum == 4) {
-			descLabel.setText("技能4描述");
-		}
+		descLabel.setText("");
 		descLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 		descLabel.setOpaque(true);
 		descLabel.setBackground(Color.green);
@@ -520,14 +512,9 @@ public class BattleHandler{
 	private void updateControlPanel() {
 		if (controlNum == 0) {
 			descLabel.setText("普通攻击");
-		}else if (controlNum == 1) {
-			descLabel.setText("技能1");
-		}else if (controlNum == 2) {
-			descLabel.setText("技能2");
-		}else if (controlNum == 3) {
-			descLabel.setText("技能3");
-		}else if (controlNum == 4) {
-			descLabel.setText("技能4");
+		}else{
+			String s = user.getSkillList()[controlNum-1].getSkillDesc();
+			descLabel.setText(s);
 		}
 
 		battlePanel.updateUI();
@@ -556,12 +543,14 @@ public class BattleHandler{
 	private void gameoverWithFailure() {
 		new AutoInfo("战 斗 失 败") ;
 		gameover = true;
+		bl.waitPro(1000);
 		battleFrame.dispose();
 	}
 	
 	private void gameoverWithSuccess() {
 		new AutoInfo("战 斗 胜 利") ;
 		gameover = true;
+		bl.waitPro(1000);
 		battleFrame.dispose();
 	}
 	
@@ -597,6 +586,18 @@ public class BattleHandler{
 		updateStatePanel();
 	}
 	
+	//魔法值判断
+	private void magicJudge() {
+		if(controlNum>=1) {
+			activeSkill s = (activeSkill)user.getSkillList()[controlNum-1];
+			if(s.getMagicCost()>user.getCurrent_MP()) {
+				new AutoInfo("魔法不足");
+			}
+		}else {
+			turnBegin();
+		}
+	}
+	
 	//回合开始
 	private void turnBegin() {
 		buttonEnable = false;
@@ -605,17 +606,17 @@ public class BattleHandler{
 			public void run() {
 				userATKHandler();
 				updateStatePanel();
-				bl.waitPro(1000);
+				bl.waitPro(200);
 				
 				if(gameover==false) {
 					new AutoInfo("敌 方 回 合") ;
-					bl.waitPro(1500);
+					bl.waitPro(1000);
 					
 					enemyATKHandler();
 					
 					if(gameover==false) {
 						new AutoInfo("我 方 回 合") ;
-						bl.waitPro(1500);
+						bl.waitPro(1000);
 						userInpoisonHandler();
 						buttonEnable = true;
 					}
@@ -628,7 +629,7 @@ public class BattleHandler{
 	
 	//user回合操作
 	private void userATKHandler() {
-		if(bl.judgeSkillType(user.getSkillList()[controlNum-1])==2) {
+		if(controlNum==0 || bl.judgeSkillType(user.getSkillList()[controlNum-1])==2) {
 			slimeButton.setIcon(getSlimeIcon(2));
 			bl.waitPro(1000);
 		}
@@ -693,17 +694,15 @@ public class BattleHandler{
 
 	
 	public static void main(String[] args) {
-		User user =new User("大魔王",2);
-		user.setCurrent_HP(30);
-		user.setP_ATK(20);
+		User user = new Assassin("大魔王");
+		user.getSkillList()[0].setSkillLevel(1);
+		user.getSkillList()[1].setSkillLevel(2);
+		user.getSkillList()[2].setSkillLevel(3);
+		user.getSkillList()[3].setSkillLevel(1);
 		List<Slime> slimeList = new ArrayList<Slime>();
-		Slime slime1 = new GreenSlime();
-		slime1.setCurrent_HP(30);
-		slime1.setP_ATK(10);
+		Slime slime1 = new GreenSlime(0,0,1);
 		slimeList.add(slime1);
-		Slime slime2 = new RedSlime();
-		slime2.setCurrent_HP(30);
-		slime2.setP_ATK(10);
+		Slime slime2 = new RedSlime(0,0,1);
 		slimeList.add(slime2);
 //		Slime slime3 = new GreenSlime();
 //		slime3.setCurrent_HP(52);

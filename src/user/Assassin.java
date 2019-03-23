@@ -29,8 +29,8 @@ public class Assassin extends User{
 		this.LV = 1;
 		
 
-		this.HP = 100;
-		this.MP = 50;
+		this.HP = 500;
+		this.MP = 150;
 		this.P_ATK = 65;
 		this.P_DEF = 25;
 		this.M_ATK = 50;
