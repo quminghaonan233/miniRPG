@@ -5,6 +5,7 @@ public class Knife extends Weapon{
 		super();
 		this.setP_ATK(40);
 		this.setAGI(10);
+		this.probability = 30;
 		this.setImagePath(System.getProperty("user.dir") + "/resource/img/Knife.png");
 	}
 }

@@ -1,6 +1,9 @@
 package gameLoader;
 
 import java.io.File;
+import java.util.ArrayList;
+
+import weapon.equip;
 
 public class GameLoaderUtil {
 	private static GameLoaderUtil glu;
@@ -25,5 +28,9 @@ public class GameLoaderUtil {
 			return false;
 		}
 		return true;
+	}
+	
+	public void PackageCombine(ArrayList<equip> equipList) {
+		
 	}
 }
