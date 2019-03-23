@@ -44,4 +44,5 @@ public class activeSkill extends Skill{
 	public void useSkill(User user, Slime slime) {
 		
 	}
+	
 }
