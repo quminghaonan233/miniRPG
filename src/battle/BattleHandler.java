@@ -471,6 +471,7 @@ public class BattleHandler{
 		HPLabel.setText("生命 : " + (int)user.getCurrent_HP());
 		MPLabel.setText("魔法 : " + (int)user.getCurrent_MP());
 		
+		enameLabel.setText(slime.getSlimeName());
 		eHPLabel.setText("生命 : " + (int)slime.getCurrent_HP());
 		eMPLabel.setText("魔法 : " + (int)slime.getCurrent_MP());
 		updateUserState();
@@ -558,8 +559,11 @@ public class BattleHandler{
 		gameover = true;
 		isWin = true;
 		bl.waitPro(1000);
+		
+		getSlimeEXP();
 		getSlimeEquip();
-		gl.PackageCombine(user.getEquipList());
+		gl.PackageCombine(user.getPackageList());
+		
 		battleFrame.dispose();
 		gi.refresh();
 		gi.frame.setVisible(true);
@@ -569,8 +573,85 @@ public class BattleHandler{
 	private void getSlimeEquip() {
 		for(Slime s: slimeList) {
 			if(s.getEquip() != null) {
-				user.getEquipList().add(s.getEquip());
+				user.getPackageList().add(s.getEquip());
 			}
+		}
+	}
+	
+	//获得slime经验
+	private void getSlimeEXP() {
+		double exp = 0;
+		for(Slime s: slimeList) {
+			exp += s.getEXP();
+		}
+		exp += user.getEXP();
+		int LVup = (int)exp/100;
+		int EXPup = (int)exp%100;
+		int userLV = user.getLV()+LVup;
+		double userEXP = (double)EXPup;
+		
+		userSkillUp(userLV);
+		user.setLV(userLV);
+		user.setEXP(userEXP);
+	}
+	
+	//用户技能升级
+	private void userSkillUp(int lv) {
+		if(lv >=1 && lv <=4) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(0);
+			user.getSkillList()[2].setSkillLevel(0);
+			user.getSkillList()[3].setSkillLevel(0);
+		}else if(lv >=5 && lv <=9) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(0);
+			user.getSkillList()[3].setSkillLevel(0);
+		}else if(lv >=10 && lv <=14) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(0);
+		}else if(lv >=15 && lv <=19) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv >=20 && lv <=24) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv >=25 && lv <=29) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv >=30 && lv <=34) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv >=35 && lv <=39) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(2);
+		}else if(lv >=40 && lv <=44) {
+			user.getSkillList()[0].setSkillLevel(3);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(2);
+		}else if(lv >=45 && lv <=49) {
+			user.getSkillList()[0].setSkillLevel(3);
+			user.getSkillList()[1].setSkillLevel(3);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(2);
+		}else {
+			user.getSkillList()[0].setSkillLevel(3);
+			user.getSkillList()[1].setSkillLevel(3);
+			user.getSkillList()[2].setSkillLevel(3);
+			user.getSkillList()[3].setSkillLevel(2);
 		}
 	}
 	
