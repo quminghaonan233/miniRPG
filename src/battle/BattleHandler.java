@@ -85,8 +85,8 @@ public class BattleHandler{
 	
 	//地图初始化
 	private void mapInit() {
-		new AutoInfo("战 斗 开 始") ;
-		bl.waitPro(1500);
+//		new AutoInfo("战 斗 开 始") ;
+//		bl.waitPro(1500);
 		battleFrame = new JFrame("Battle");
 		battleFrame.setSize(GUIWidth, GUIHeight);
 		battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,7 +100,7 @@ public class BattleHandler{
 		
 		battleFrame.add(battlePanel);
 		battleFrame.setVisible(true);
-		battleFrame.requestFocus();
+		battleFrame.setAlwaysOnTop(true);
 	}
 	
 	//战斗整体panel

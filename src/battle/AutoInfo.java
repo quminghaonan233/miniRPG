@@ -26,6 +26,7 @@ public class AutoInfo {
 		
 		infoFrame.add(infoLabel);
 		infoFrame.setVisible(true);
+		infoFrame.setAlwaysOnTop(true);
 		
 		// 创建一个新计时器  
         Timer timer = new Timer();  
@@ -36,7 +37,7 @@ public class AutoInfo {
             	infoFrame.dispose();  
             	timer.cancel();
             }  
-        }, 1500);  
+        }, 1000);  
 	}
   
 }  

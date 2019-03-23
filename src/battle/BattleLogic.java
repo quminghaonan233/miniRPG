@@ -23,8 +23,6 @@ public class BattleLogic {
 	public void userATK(User user, Slime slime, int controlNum) {
 		if(controlNum == 0) {
 			user.attack(slime);
-			slime.getStateList()[0].setLastTime(1);
-			slime.getStateList()[0].setDamage(3);
 		}else if(controlNum == 1) {
 			
 		}else if(controlNum == 2) {
@@ -95,25 +93,25 @@ public class BattleLogic {
 	
 	//slimeÑ£ÔÎ
 	public boolean isSlimeInVertigo(Slime slime) {
-		if (slime.getStateList()[3].getLastTime()>=1) {
-			return true;
-		}
-		return false;
-	}
-	
-	public void slimeInVertigoInvoker(Slime slime) {
-		slime.getStateList()[3].setLastTime(slime.getStateList()[3].getLastTime()-1);
-	}
-	
-	//slimeÑ£ÔÎ
-	public boolean isSlimeInSilence(Slime slime) {
 		if (slime.getStateList()[2].getLastTime()>=1) {
 			return true;
 		}
 		return false;
 	}
 	
-	public void slimeInSilenceInvoker(Slime slime) {
+	public void slimeInVertigoInvoker(Slime slime) {
 		slime.getStateList()[2].setLastTime(slime.getStateList()[2].getLastTime()-1);
+	}
+	
+	//slimeÑ£ÔÎ
+	public boolean isSlimeInSilence(Slime slime) {
+		if (slime.getStateList()[1].getLastTime()>=1) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void slimeInSilenceInvoker(Slime slime) {
+		slime.getStateList()[1].setLastTime(slime.getStateList()[1].getLastTime()-1);
 	}
 }

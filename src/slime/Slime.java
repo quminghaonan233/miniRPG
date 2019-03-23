@@ -3,9 +3,11 @@ package slime;
 import java.util.List;
 import java.util.Random;
 
+import Medicine.Medicine;
 import state.State;
 import state.StateType;
 import user.User;
+import weapon.equip;
 
 public class Slime {
 	protected String imagePath;
@@ -40,10 +42,16 @@ public class Slime {
 	//Ä§·¨·ÀÓù
 	protected double M_DEF;
 	
+	protected equip equip;
+	
 	protected double current_HP;
 	protected double current_MP;
 	protected State[] stateList = {new State(StateType.ÖĞ¶¾,0,0),new State(StateType.³ÁÄ¬,0,0),new State(StateType.Ñ£ÔÎ,0,0)};
 	
+	public Slime() {
+		Random rand=new Random();
+		int randomInt = rand.nextInt(1000);
+	}
 	
 	public double getCurrent_HP() {
 		return current_HP;
