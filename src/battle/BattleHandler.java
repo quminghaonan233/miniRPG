@@ -37,6 +37,7 @@ public class BattleHandler{
 	private String skill4_path = "resource/img/b_skill4.png";
 	
 	private JFrame battleFrame = null;
+	private JFrame mainFrame = null;
 	private JPanel battlePanel = null;
 	private JPanel statePanel = null;
 	private JPanel characterPanel = null;
@@ -71,7 +72,8 @@ public class BattleHandler{
 
 	private BattleLogic bl = BattleLogic.getInstance();
 	
-	public BattleHandler(User user, List<Slime> slimeList) {
+	public BattleHandler(JFrame mainFrame, User user, List<Slime> slimeList) {
+		this.mainFrame = mainFrame;
 		this.user = user;
 		this.slimeList = slimeList;
 		this.slimeNum = slimeList.size();
@@ -84,6 +86,7 @@ public class BattleHandler{
 	
 	//地图初始化
 	private void mapInit() {
+		mainFrame.setVisible(false);
 //		new AutoInfo("战 斗 开 始") ;
 //		bl.waitPro(1500);
 		battleFrame = new JFrame("Battle");
@@ -545,6 +548,7 @@ public class BattleHandler{
 		gameover = true;
 		bl.waitPro(1000);
 		battleFrame.dispose();
+		mainFrame.setVisible(true);
 	}
 	
 	private void gameoverWithSuccess() {
@@ -552,6 +556,7 @@ public class BattleHandler{
 		gameover = true;
 		bl.waitPro(1000);
 		battleFrame.dispose();
+		mainFrame.setVisible(true);
 	}
 	
 	//用户中毒处理
@@ -708,7 +713,7 @@ public class BattleHandler{
 //		slime3.setCurrent_HP(52);
 //		slime3.setP_ATK(10);
 //		slimeList.add(slime3);
-		new BattleHandler(user, slimeList).start();
+//		new BattleHandler(user, slimeList).start();
 	}
 	
 }
