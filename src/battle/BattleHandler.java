@@ -559,7 +559,9 @@ public class BattleHandler{
 	//获得slime装备
 	private void getSlimeEquip() {
 		for(Slime s: slimeList) {
-			user.getEquipList().add(s.getEquip());
+			if(s.getEquip() != null) {
+				user.getEquipList().add(s.getEquip());
+			}
 		}
 	}
 	
