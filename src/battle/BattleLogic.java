@@ -138,4 +138,74 @@ public class BattleLogic {
 			}
 		}
 	}
+	
+	//user技能刷新
+	public void userSkillUpdate(User user) {
+		for(Skill s:user.getSkillList()) {
+			if(s instanceof activeSkill) {
+				activeSkill temp = (activeSkill)s;
+				temp.setColdTime(0);
+			}
+		}
+	}
+	
+	//用户技能升级
+	public void userSkillUp(User user, int lv) {
+		if(lv == 1) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(0);
+			user.getSkillList()[2].setSkillLevel(0);
+			user.getSkillList()[3].setSkillLevel(0);
+		}else if(lv == 2) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(0);
+			user.getSkillList()[3].setSkillLevel(0);
+		}else if(lv == 3) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(0);
+		}else if(lv == 4) {
+			user.getSkillList()[0].setSkillLevel(1);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv == 5) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(1);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv == 6) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(1);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv == 7) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(1);
+		}else if(lv == 8) {
+			user.getSkillList()[0].setSkillLevel(2);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(2);
+		}else if(lv == 9) {
+			user.getSkillList()[0].setSkillLevel(3);
+			user.getSkillList()[1].setSkillLevel(2);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(2);
+		}else if(lv == 10) {
+			user.getSkillList()[0].setSkillLevel(3);
+			user.getSkillList()[1].setSkillLevel(3);
+			user.getSkillList()[2].setSkillLevel(2);
+			user.getSkillList()[3].setSkillLevel(2);
+		}else {
+			user.getSkillList()[0].setSkillLevel(3);
+			user.getSkillList()[1].setSkillLevel(3);
+			user.getSkillList()[2].setSkillLevel(3);
+			user.getSkillList()[3].setSkillLevel(2);
+		}
+	}
 }

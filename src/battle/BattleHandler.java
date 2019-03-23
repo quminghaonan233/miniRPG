@@ -82,6 +82,7 @@ public class BattleHandler{
 		this.slimeList = slimeList;
 		this.slimeNum = slimeList.size();
 		this.slime = slimeList.get(0);
+		bl.userSkillUpdate(user);
 	}
 	
 	public void start() {
@@ -590,70 +591,12 @@ public class BattleHandler{
 		int userLV = user.getLV()+LVup;
 		double userEXP = (double)EXPup;
 		
-		userSkillUp(userLV);
+		bl.userSkillUp(user, userLV);
 		user.setLV(userLV);
 		user.setEXP(userEXP);
 	}
 	
-	//用户技能升级
-	private void userSkillUp(int lv) {
-		if(lv >=1 && lv <=4) {
-			user.getSkillList()[0].setSkillLevel(1);
-			user.getSkillList()[1].setSkillLevel(0);
-			user.getSkillList()[2].setSkillLevel(0);
-			user.getSkillList()[3].setSkillLevel(0);
-		}else if(lv >=5 && lv <=9) {
-			user.getSkillList()[0].setSkillLevel(1);
-			user.getSkillList()[1].setSkillLevel(1);
-			user.getSkillList()[2].setSkillLevel(0);
-			user.getSkillList()[3].setSkillLevel(0);
-		}else if(lv >=10 && lv <=14) {
-			user.getSkillList()[0].setSkillLevel(1);
-			user.getSkillList()[1].setSkillLevel(1);
-			user.getSkillList()[2].setSkillLevel(1);
-			user.getSkillList()[3].setSkillLevel(0);
-		}else if(lv >=15 && lv <=19) {
-			user.getSkillList()[0].setSkillLevel(1);
-			user.getSkillList()[1].setSkillLevel(1);
-			user.getSkillList()[2].setSkillLevel(1);
-			user.getSkillList()[3].setSkillLevel(1);
-		}else if(lv >=20 && lv <=24) {
-			user.getSkillList()[0].setSkillLevel(2);
-			user.getSkillList()[1].setSkillLevel(1);
-			user.getSkillList()[2].setSkillLevel(1);
-			user.getSkillList()[3].setSkillLevel(1);
-		}else if(lv >=25 && lv <=29) {
-			user.getSkillList()[0].setSkillLevel(2);
-			user.getSkillList()[1].setSkillLevel(2);
-			user.getSkillList()[2].setSkillLevel(1);
-			user.getSkillList()[3].setSkillLevel(1);
-		}else if(lv >=30 && lv <=34) {
-			user.getSkillList()[0].setSkillLevel(2);
-			user.getSkillList()[1].setSkillLevel(2);
-			user.getSkillList()[2].setSkillLevel(2);
-			user.getSkillList()[3].setSkillLevel(1);
-		}else if(lv >=35 && lv <=39) {
-			user.getSkillList()[0].setSkillLevel(2);
-			user.getSkillList()[1].setSkillLevel(2);
-			user.getSkillList()[2].setSkillLevel(2);
-			user.getSkillList()[3].setSkillLevel(2);
-		}else if(lv >=40 && lv <=44) {
-			user.getSkillList()[0].setSkillLevel(3);
-			user.getSkillList()[1].setSkillLevel(2);
-			user.getSkillList()[2].setSkillLevel(2);
-			user.getSkillList()[3].setSkillLevel(2);
-		}else if(lv >=45 && lv <=49) {
-			user.getSkillList()[0].setSkillLevel(3);
-			user.getSkillList()[1].setSkillLevel(3);
-			user.getSkillList()[2].setSkillLevel(2);
-			user.getSkillList()[3].setSkillLevel(2);
-		}else {
-			user.getSkillList()[0].setSkillLevel(3);
-			user.getSkillList()[1].setSkillLevel(3);
-			user.getSkillList()[2].setSkillLevel(3);
-			user.getSkillList()[3].setSkillLevel(2);
-		}
-	}
+
 	
 	//用户中毒处理
 	private void userInpoisonHandler() {
