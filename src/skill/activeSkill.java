@@ -4,10 +4,16 @@ import slime.Slime;
 import user.User;
 
 public class activeSkill extends Skill{
+	protected int COLD;
 	protected int coldTime;
+	protected int LAST;
 	protected int lastTime;
 	protected int magicCost;
 	protected boolean isDamageSkill;
+	
+	public activeSkill(){
+		this.coldTime = 0;
+	}
 	
 	public boolean isDamageSkill() {
 		return isDamageSkill;
@@ -40,9 +46,17 @@ public class activeSkill extends Skill{
 	public void setLastTime(int lastTime) {
 		this.lastTime = lastTime;
 	}
+	
+	public int getCOLD() {
+		return COLD;
+	}
+
+	public int getLAST() {
+		return LAST;
+	}
 
 	public void useSkill(User user, Slime slime) {
-		
+		this.coldTime = this.COLD;
 	}
 	
 }

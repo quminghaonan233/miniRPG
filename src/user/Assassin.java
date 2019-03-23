@@ -55,6 +55,8 @@ public class Assassin extends User{
 		this.skillList[1] = new assassinSkill2();
 		this.skillList[2] = new assassinSkill3();
 		this.skillList[3] = new assassinSkill4();
+		
+		this.skillList[0].setSkillLevel(1);
 
 	}
 	

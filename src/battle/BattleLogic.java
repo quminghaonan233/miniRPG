@@ -126,4 +126,16 @@ public class BattleLogic {
 			}
 		}
 	}
+	
+	//user技能冷却处理
+	public void userSkillColdTimeInvoker(User user) {
+		for (Skill s:user.getSkillList()) {
+			if (s instanceof activeSkill) {
+				activeSkill temp = (activeSkill)s;
+				if(temp.getColdTime()>=1) {
+					temp.setColdTime(temp.getColdTime()-1);
+				}
+			}
+		}
+	}
 }

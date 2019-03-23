@@ -87,8 +87,6 @@ public class BattleHandler{
 	//地图初始化
 	private void mapInit() {
 		mainFrame.setVisible(false);
-//		new AutoInfo("战 斗 开 始") ;
-//		bl.waitPro(1500);
 		battleFrame = new JFrame("Battle");
 		battleFrame.setSize(GUIWidth, GUIHeight);
 		battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,7 +100,7 @@ public class BattleHandler{
 		
 		battleFrame.add(battlePanel);
 		battleFrame.setVisible(true);
-		battleFrame.setAlwaysOnTop(true);
+		new AutoInfo("战 斗 开 始") ;
 	}
 	
 	//战斗整体panel
@@ -227,7 +225,6 @@ public class BattleHandler{
 		eButton1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(buttonEnable == true && slimeList.get(0).isAlive()) {
 					slime = slimeList.get(0);
 					slimeButton = eButton1;
@@ -252,7 +249,6 @@ public class BattleHandler{
 		eButton2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(buttonEnable == true && slimeList.get(1).isAlive()) {
 					slime = slimeList.get(1);
 					slimeButton = eButton2;
@@ -277,7 +273,6 @@ public class BattleHandler{
 		eButton3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(buttonEnable == true && slimeList.get(2).isAlive()) {
 					slime = slimeList.get(2);
 					slimeButton = eButton3;
@@ -544,6 +539,7 @@ public class BattleHandler{
 	
 	//战斗结束
 	private void gameoverWithFailure() {
+		updateStatePanel();
 		new AutoInfo("战 斗 失 败") ;
 		gameover = true;
 		bl.waitPro(1000);
@@ -552,6 +548,7 @@ public class BattleHandler{
 	}
 	
 	private void gameoverWithSuccess() {
+		updateStatePanel();
 		new AutoInfo("战 斗 胜 利") ;
 		gameover = true;
 		bl.waitPro(1000);
@@ -591,12 +588,24 @@ public class BattleHandler{
 		updateStatePanel();
 	}
 	
-	//魔法值判断
+	//魔法判断
 	private void magicJudge() {
+		System.out.println("magicJudge");
 		if(controlNum>=1) {
 			activeSkill s = (activeSkill)user.getSkillList()[controlNum-1];
 			if(s.getMagicCost()>user.getCurrent_MP()) {
+				System.out.println("魔法不足");
 				new AutoInfo("魔法不足");
+				controlACK = false;
+				controlNum = -1;
+			}else if(s.getColdTime()>=1){
+				System.out.println("技能冷却");
+				new AutoInfo("技能冷却");
+				controlACK = false;
+				controlNum = -1;
+				System.out.println("haha");
+			}else {
+				turnBegin();
 			}
 		}else {
 			turnBegin();
@@ -615,14 +624,15 @@ public class BattleHandler{
 				
 				if(gameover==false) {
 					new AutoInfo("敌 方 回 合") ;
-					bl.waitPro(1000);
+					bl.waitPro(700);
 					
 					enemyATKHandler();
 					
 					if(gameover==false) {
 						new AutoInfo("我 方 回 合") ;
-						bl.waitPro(1000);
+						bl.waitPro(700);
 						userInpoisonHandler();
+						bl.userSkillColdTimeInvoker(user);
 						buttonEnable = true;
 					}
 				}
@@ -664,7 +674,7 @@ public class BattleHandler{
 				slimeInpoisonHandler();
 				if (!slime.isAlive()) {
 					getSlimeButton(i+1).setIcon(getSlimeIcon(4));
-					bl.waitPro(1000);
+					bl.waitPro(500);
 					if(bl.isSuccess(slimeList)) {
 						gameoverWithSuccess();
 						break;
@@ -677,12 +687,12 @@ public class BattleHandler{
 					SlimeInVertigoHandler();
 				}
 				
-				bl.waitPro(1000);
+				bl.waitPro(500);
 				bl.enemyATK(slime, user);
 				
 				updateStatePanel();
 				
-				bl.waitPro(1000);
+				bl.waitPro(500);
 				if (bl.isFailure(user)) {
 					gameoverWithFailure();
 					break;
@@ -713,7 +723,7 @@ public class BattleHandler{
 //		slime3.setCurrent_HP(52);
 //		slime3.setP_ATK(10);
 //		slimeList.add(slime3);
-//		new BattleHandler(user, slimeList).start();
+		new BattleHandler(new JFrame(),user, slimeList).start();
 	}
 	
 }
