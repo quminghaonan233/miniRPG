@@ -1,9 +1,11 @@
 package skill;
 
+import java.io.Serializable;
+
 import slime.Slime;
 import user.User;
 
-public class Skill {
+public class Skill implements Serializable{
 	protected String skillName;
 	protected String skillDesc;
 	protected int skillLevel = 0;

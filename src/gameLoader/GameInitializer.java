@@ -60,19 +60,23 @@ public class GameInitializer {
 	private JButton dropButton;
 	private JButton equipButton;
 	private JButton useButton;
+	private JButton saveButton;
 	
 	private JFrame frame;
 	private JPanel mapPanel;
 	private JPanel userPanel;
 	
+	private Configure config;
+	
 	private JLabel[][] labelList;
 	private String [][] iconPathList;
 	
-	public GameInitializer(User u,GameMap m) {
+	public GameInitializer(User u,GameMap m,Configure config) {
 		this.user = u;
 		this.gameMap = m;
 		this.userX = m.getStartX();
 		this.userY = m.getStartY();
+		this.config = config;
 		
 	    frame = new KeyBoardFrame("miniRPG");
 	    
@@ -266,7 +270,27 @@ public class GameInitializer {
 		useButton.setEnabled(false);
 		useButton.addActionListener(new UseButtonActionListener());
 		userPanel.add(useButton);
+		
+		saveButton = new JButton("±£´æ");
+		saveButton.setBounds(50, 680, 80, 40);
+		saveButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				saveToFile();
+				frame.requestFocus();
+			}
+		});
+		userPanel.add(saveButton);
+		
 
+	}
+	
+	private void saveToFile() {
+		GameLoader.getInstance().save(user);
+		GameLoader.getInstance().save(config);
+		
 	}
 	
 	public String getEquipImage(int equipType){
@@ -371,6 +395,7 @@ public class GameInitializer {
 			this.userX = 0;
 			this.userY = 0;
 			refresh();
+			config.setLevel(config.getLevel() + 1);
 		}
 	}
 	

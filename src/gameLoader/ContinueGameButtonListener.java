@@ -22,10 +22,11 @@ public class ContinueGameButtonListener implements ActionListener{
 	
 	private void loadAndInitialize() {
 		GameLoader gameLoader = GameLoader.getInstance();
-		User u = gameLoader.load(User.class);
-		GameMap m  = gameLoader.load(GameMap.class);
+		User u = gameLoader.loadUser();
+		Configure config = gameLoader.load(Configure.class);
+		GameMap m  = new GameMap(config.getLevel());
 		
-		GameInitializer gameInitializer = new GameInitializer(u,m); 
+		GameInitializer gameInitializer = new GameInitializer(u,m,config); 
 		gameInitializer.initializeGame();
 	}
 }

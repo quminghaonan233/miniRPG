@@ -1,7 +1,14 @@
 package weapon;
 
-public class equip {
+import java.io.Serializable;
+
+public class equip implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2L;
+
 	protected int probability;
 	
 	protected int num;

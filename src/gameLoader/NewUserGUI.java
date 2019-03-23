@@ -105,7 +105,9 @@ public class NewUserGUI {
 				frame.dispose();
 				User u = RoleType.getUserFactoryById(roleSelect).createUser(userName);
 				GameMap m = new GameMap();
-				GameInitializer gameInitializer = new GameInitializer(u, m); 
+				Configure config = new Configure();
+				config.setLevel(1);
+				GameInitializer gameInitializer = new GameInitializer(u, m, config); 
 				gameInitializer.initializeGame();
 			}
 			

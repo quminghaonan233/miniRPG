@@ -1,12 +1,16 @@
 package weapon;
 
+
 public enum EquipType {
 	Killer(Killer.class,0),
 	Knife(Knife.class,1),
 	DarkScarf(DarkScarf.class,2),
 	FireHeart(FireHeart.class,3),
 	FrostMourn(FrostMourn.class,4),
-	InvicibleShiled(InvicibleShiled.class,5);
+	InvicibleShiled(InvicibleShiled.class,5),
+	HealMedicine(Medicine.HealMedicine.class,6),
+	MagicMedicine(Medicine.MagicMedicine.class,7);
+	
 	
 	private Class clazz;
 	private int equipId;
