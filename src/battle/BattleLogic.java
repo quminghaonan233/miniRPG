@@ -2,6 +2,9 @@ package battle;
 
 import java.util.List;
 
+import skill.Skill;
+import skill.activeSkill;
+import skill.passiveSkill;
 import slime.Slime;
 import state.StateType;
 import user.User;
@@ -23,14 +26,9 @@ public class BattleLogic {
 	public void userATK(User user, Slime slime, int controlNum) {
 		if(controlNum == 0) {
 			user.attack(slime);
-		}else if(controlNum == 1) {
-			
-		}else if(controlNum == 2) {
-			
-		}else if(controlNum == 3) {
-			
-		}else if(controlNum == 4) {
-			
+		}else{
+			activeSkill s = (activeSkill)user.getSkillList()[controlNum-1];
+			s.useSkill(user, slime);
 		}
 	}
 	
@@ -113,5 +111,19 @@ public class BattleLogic {
 	
 	public void slimeInSilenceInvoker(Slime slime) {
 		slime.getStateList()[1].setLastTime(slime.getStateList()[1].getLastTime()-1);
+	}
+	
+	//判断技能种类
+	public int judgeSkillType(Skill s) {
+		if (s instanceof passiveSkill) {
+			return 0;
+		}else {
+			activeSkill temp = (activeSkill)s;
+			if(temp.isDamageSkill()) {
+				return 2;
+			}else {
+				return 1;
+			}
+		}
 	}
 }

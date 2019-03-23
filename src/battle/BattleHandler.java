@@ -7,14 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -109,7 +106,7 @@ public class BattleHandler{
 		statePanel = new JPanel();
 		statePanel.setLocation(0,0);
 		statePanel.setSize(1200,120);
-		statePanel.setLayout(null);
+		statePanel.setLayout(null); 
 		stateSet();
 		
 		characterPanel = new JPanel();
@@ -336,10 +333,17 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(controlNum == 1 && controlACK == true) {
+					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
 						controlACK = false;
+					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
+						controlNum = 1;
+						turnBegin();
 					}else {
-						controlACK = true;
+						if(controlNum == 1 && controlACK == true) {
+							controlACK = false;
+						}else {
+							controlACK = true;
+						}
 					}
 					controlNum = 1;
 					updateControlPanel();
@@ -358,10 +362,17 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(controlNum == 2 && controlACK == true) {
+					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
 						controlACK = false;
+					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
+						controlNum = 2;
+						turnBegin();
 					}else {
-						controlACK = true;
+						if(controlNum == 2 && controlACK == true) {
+							controlACK = false;
+						}else {
+							controlACK = true;
+						}
 					}
 					controlNum = 2;
 					updateControlPanel();
@@ -381,10 +392,17 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(controlNum == 3 && controlACK == true) {
+					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
 						controlACK = false;
+					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
+						controlNum = 3;
+						turnBegin();
 					}else {
-						controlACK = true;
+						if(controlNum == 3 && controlACK == true) {
+							controlACK = false;
+						}else {
+							controlACK = true;
+						}
 					}
 					controlNum = 3;
 					updateControlPanel();
@@ -403,10 +421,17 @@ public class BattleHandler{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(buttonEnable == true) {
-					if(controlNum == 4 && controlACK == true) {
+					if(bl.judgeSkillType(user.getSkillList()[0]) == 0) {
 						controlACK = false;
+					}else if(bl.judgeSkillType(user.getSkillList()[0]) == 1){
+						controlNum = 4;
+						turnBegin();
 					}else {
-						controlACK = true;
+						if(controlNum == 4 && controlACK == true) {
+							controlACK = false;
+						}else {
+							controlACK = true;
+						}
 					}
 					controlNum = 4;
 					updateControlPanel();
@@ -603,8 +628,10 @@ public class BattleHandler{
 	
 	//user»ØºÏ²Ù×÷
 	private void userATKHandler() {
-		slimeButton.setIcon(getSlimeIcon(2));
-		bl.waitPro(1000);
+		if(bl.judgeSkillType(user.getSkillList()[controlNum-1])==2) {
+			slimeButton.setIcon(getSlimeIcon(2));
+			bl.waitPro(1000);
+		}
 		bl.userATK(user, slime, controlNum);
 		if (!slime.isAlive()) {
 			slimeButton.setIcon(getSlimeIcon(4));

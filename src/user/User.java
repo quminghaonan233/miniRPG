@@ -3,6 +3,8 @@ package user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import skill.Skill;
 import slime.Slime;
 import weapon.equip;
 import state.State;
@@ -67,7 +69,15 @@ public class User implements Serializable{
 	protected double growM_ATK;
 	protected double growM_DEF;
 	
-	
+	protected Skill[] skillList = new Skill[4];
+	public Skill[] getSkillList() {
+		return skillList;
+	}
+
+	public void setSkillList(Skill[] skillList) {
+		this.skillList = skillList;
+	}
+
 	protected double current_HP;
 	protected double current_MP;
 	protected State poison = new State(StateType.ÖÐ¶¾,0,0);
@@ -328,6 +338,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempAVD += e.getAVD();
 		}
+		tempAVD += this.getAGIDecroted()*0.3;
 		return tempAVD;
 	}
 
@@ -337,6 +348,7 @@ public class User implements Serializable{
 		for(equip e :equipList){
 			tempCRT += e.getCRT();
 		}
+		tempCRT += this.getAGIDecroted()*0.3;
 		return tempCRT;
 	}
 

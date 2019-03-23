@@ -3,6 +3,10 @@ package user;
 import java.util.ArrayList;
 
 import Medicine.HealMedicine;
+import skill.assassinSkill1;
+import skill.assassinSkill2;
+import skill.assassinSkill3;
+import skill.assassinSkill4;
 import weapon.DarkScarf;
 import weapon.FireHeart;
 import weapon.Killer;
@@ -27,6 +31,13 @@ public class Assassin extends User{
 
 		this.HP = 100;
 		this.MP = 50;
+		this.P_ATK = 65;
+		this.P_DEF = 25;
+		this.M_ATK = 50;
+		this.M_DEF = 20;
+		this.STR = 15;
+		this.AGI = 40;
+		this.INT = 10;
 		ArrayList<equip> eq = new ArrayList<equip>();
 		this.equipList = eq;
 		
@@ -39,6 +50,26 @@ public class Assassin extends User{
 		this.packageList = pack;
 		this.current_HP = this.getHPDecroted();
 		this.current_MP = this.getMPDecroted();
+		
+		this.skillList[0] = new assassinSkill1();
+		this.skillList[1] = new assassinSkill2();
+		this.skillList[2] = new assassinSkill3();
+		this.skillList[3] = new assassinSkill4();
 
+	}
+	
+	@Override
+	public double getAVDDecroted() {
+		double avd = super.getAVDDecroted()+20;
+		return avd;
+	}
+
+	@Override
+	public double getCRTDecroted() {
+		double tempCRT = CRT;
+		for(equip e :equipList){
+			tempCRT += e.getCRT();
+		}
+		return tempCRT;
 	}
 }

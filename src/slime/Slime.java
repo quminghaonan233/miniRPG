@@ -44,6 +44,13 @@ public class Slime {
 	
 	protected equip equip;
 	
+	protected double growHP;
+	protected double growMP;
+	protected double growP_ATK;
+	protected double growP_DEF;
+	protected double growM_ATK;
+	protected double growM_DEF;
+	
 	protected double current_HP;
 	protected double current_MP;
 	protected State[] stateList = {new State(StateType.ÖÐ¶¾,0,0),new State(StateType.³ÁÄ¬,0,0),new State(StateType.Ñ£ÔÎ,0,0)};
@@ -168,6 +175,42 @@ public class Slime {
 			this.posY = posY - r.nextInt(2);
 		}	
 		
+	}
+	
+	public double getHPDecroted() {
+		double tempHP = HP;
+		tempHP += (this.getLV() - 1)*this.growHP;
+		return tempHP;
+	}
+	
+	public double getMPDecroted() {
+		double tempMP = MP;
+		tempMP += (this.getLV() - 1)*this.growMP;
+		return tempMP;
+	}
+	
+	public double getP_ATKDecroted() {
+		double tempP_ATK = P_ATK;
+		tempP_ATK += (this.getLV() - 1)*this.growP_ATK;
+		return tempP_ATK;
+	}
+
+	public double getP_DEFDecroted() {
+		double tempP_DEF = P_DEF;
+		tempP_DEF += (this.getLV() - 1)*this.growP_DEF;
+		return tempP_DEF;
+	}
+
+	public double getM_ATKDecroted() {
+		double tempM_ATK = M_ATK;
+		tempM_ATK += (this.getLV() - 1)*this.growM_ATK;
+		return tempM_ATK;
+	}
+
+	public double getM_DEFDecroted() {
+		double tempM_DEF = M_DEF;
+		tempM_DEF += (this.getLV() - 1)*this.growM_DEF;
+		return tempM_DEF;
 	}
 	
 	
