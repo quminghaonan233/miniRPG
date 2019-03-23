@@ -16,7 +16,7 @@ public class RedSlime extends Slime{
 		
 		this.HP = 1000;
 		this.MP = 200;
-		this.LV = 1;
+		this.EXP = 35+(level-1)*5;
 		this.P_ATK = 70;
 		this.P_DEF = 30;
 		this.M_ATK = 50;

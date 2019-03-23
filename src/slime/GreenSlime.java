@@ -16,7 +16,7 @@ public class GreenSlime extends Slime {
 		
 		this.HP = 800;
 		this.MP = 200;
-		this.LV = 1;
+		this.EXP = 30+(level-1)*5;
 		this.P_ATK = 50;
 		this.P_DEF = 30;
 		this.M_ATK = 70;

@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import gameLoader.GameInitializer;
 import gameLoader.GameLoaderUtil;
 import skill.activeSkill;
 import slime.GreenSlime;
@@ -37,6 +38,7 @@ public class BattleHandler{
 	private String skill3_path = "resource/img/b_skill3.png";
 	private String skill4_path = "resource/img/b_skill4.png";
 	
+	private GameInitializer gi = null;
 	private JFrame battleFrame = null;
 	private JPanel battlePanel = null;
 	private JPanel statePanel = null;
@@ -68,12 +70,14 @@ public class BattleHandler{
 	private int controlNum = -1;
 	private boolean controlACK = false;
 	public boolean gameover = false;
+	public boolean isWin = true;
 	private boolean buttonEnable = true;
 
 	private BattleLogic bl = BattleLogic.getInstance();
 	private GameLoaderUtil gl = GameLoaderUtil.getInstance();
 	
-	public BattleHandler(User user, List<Slime> slimeList) {
+	public BattleHandler(GameInitializer gi, User user, List<Slime> slimeList) {
+		this.gi = gi;
 		this.user = user;
 		this.slimeList = slimeList;
 		this.slimeNum = slimeList.size();
@@ -86,6 +90,7 @@ public class BattleHandler{
 	
 	//地图初始化
 	private void mapInit() {
+		gi.frame.setVisible(false);
 		battleFrame = new JFrame("Battle");
 		battleFrame.setSize(GUIWidth, GUIHeight);
 		battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -541,19 +546,24 @@ public class BattleHandler{
 		updateStatePanel();
 		new AutoInfo("战 斗 失 败") ;
 		gameover = true;
+		isWin = true;
 		bl.waitPro(1000);
 		battleFrame.dispose();
+		gi.refresh();
+		gi.frame.setVisible(true);
 	}
 	
 	private void gameoverWithSuccess() {
 		updateStatePanel();
 		new AutoInfo("战 斗 胜 利") ;
 		gameover = true;
+		isWin = true;
 		bl.waitPro(1000);
 		getSlimeEquip();
 		gl.PackageCombine(user.getEquipList());
 		battleFrame.dispose();
-		
+		gi.refresh();
+		gi.frame.setVisible(true);
 	}
 	
 	//获得slime装备
