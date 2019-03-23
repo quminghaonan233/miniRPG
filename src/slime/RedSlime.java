@@ -15,6 +15,8 @@ public class RedSlime extends Slime{
 		this.SlimeType = type;
 		this.posX = x;
 		this.posY = y;
+		this.current_HP=50;
+
 	}
 	
 	public String getSlimeName() {

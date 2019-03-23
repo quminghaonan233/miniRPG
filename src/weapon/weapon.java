@@ -1,7 +1,7 @@
 package weapon;
 
-public class weapon extends equip{
-	public weapon() {
+public class Weapon extends equip{
+	public Weapon() {
 		super();
 	}
 }

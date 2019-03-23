@@ -28,7 +28,7 @@ public class GameMap implements Serializable{
 	
 	//用于初始化开始地图
 	public GameMap() {
-		this(0);
+		this(1);
 	}
 	
 	public GameMap(int level) {

@@ -35,9 +35,10 @@ public class NewUserGUI {
 	private JLabel userNameMessage;
 	
 	private JButton [] roleButtonList;
+	private JFrame frame;
 	
 	public void createNewUser() {
-	    JFrame frame = new JFrame("choose a role");
+	    frame = new JFrame("choose a role");
 	    
 	    frame.setSize(GUIWidth, GUIHeight);
 	    frame.setLocationRelativeTo(null);
@@ -101,6 +102,7 @@ public class NewUserGUI {
 				userNameMessage.setVisible(true);
 			}
 			else {
+				frame.dispose();
 				User u = RoleType.getUserFactoryById(roleSelect).createUser(userName);
 				GameMap m = new GameMap();
 				GameInitializer gameInitializer = new GameInitializer(u, m); 

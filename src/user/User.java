@@ -3,13 +3,10 @@ package user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-
-import Medicine.Medicine;
-import scroll.Scroll;
 import slime.Slime;
 import weapon.equip;
 import state.State;
+import state.StateType;
 
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -22,10 +19,8 @@ public class User implements Serializable{
 	protected ArrayList<equip> equipList;
 	
 	//背包物品
-	protected ArrayList<equip> equipPackage;
-	protected ArrayList<Medicine> medicinePackage;
-	protected ArrayList<Scroll> scrollPackage;
-	
+	protected ArrayList<equip> packageList;
+
 	//生命
 	protected double HP;
 	
@@ -75,7 +70,7 @@ public class User implements Serializable{
 	
 	protected double current_HP;
 	protected double current_MP;
-	protected State state;
+	protected State state = new State(StateType.中毒,0,0);
 
 	public State getState() {
 		return state;
@@ -125,9 +120,7 @@ public class User implements Serializable{
 		
 		this.equipList = new ArrayList<equip>();
 		
-		this.equipPackage = new ArrayList<equip>();
-		this.medicinePackage = new ArrayList<Medicine>();
-		this.scrollPackage = new ArrayList<Scroll>();
+		this.packageList = new ArrayList<equip>();
 
 	}
 	
@@ -362,30 +355,17 @@ public class User implements Serializable{
 	public void setEquipList(ArrayList<equip> equipList) {
 		this.equipList = equipList;
 	}
-
-	public ArrayList<equip> getEquipPackage() {
-		return equipPackage;
+	
+	
+	public ArrayList<equip> getPackageList() {
+		return packageList;
 	}
 
-	public void setEquipPackage(ArrayList<equip> equipPackage) {
-		this.equipPackage = equipPackage;
+	public void setPackageList(ArrayList<equip> packageList) {
+		this.packageList = packageList;
 	}
 
-	public ArrayList<Medicine> getMedicinePackage() {
-		return medicinePackage;
-	}
 
-	public void setMedicinePackage(ArrayList<Medicine> medicinePackage) {
-		this.medicinePackage = medicinePackage;
-	}
-
-	public ArrayList<Scroll> getScrollPackage() {
-		return scrollPackage;
-	}
-
-	public void setScrollPackage(ArrayList<Scroll> scrollPackage) {
-		this.scrollPackage = scrollPackage;
-	}
 	
 	public boolean isAlive() {
 		if((int)this.current_HP>0) {

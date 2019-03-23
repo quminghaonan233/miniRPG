@@ -3,6 +3,8 @@ package weapon;
 public class equip {
 	
 	protected int num;
+	
+	protected String imagePath;
 
 	//ÉúÃü
 	protected double HP;
@@ -149,5 +151,13 @@ public class equip {
 
 	public void setCRT(double cRT) {
 		CRT = cRT;
+	}
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 }
