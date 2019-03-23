@@ -72,8 +72,9 @@ public class BattleLogic {
 		return false;
 	}
 	
-	public void userInPoisonHandler(User user) {
+	public void userInPoisonInvoker(User user) {
 		user.getState().setLastTime(user.getState().getLastTime()-1);
-		user.setCurrent_HP(user.getCurrent_HP()-user.getState().getDamage());
+		double current_HP = user.getCurrent_HP()-user.getState().getDamage();
+		user.setCurrent_HP(current_HP>0?current_HP:0);
 	}
 }

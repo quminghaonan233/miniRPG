@@ -84,8 +84,8 @@ public class BattleHandler{
 	}
 	
 	private void mapInit() {
-//		new AutoInfo("战 斗 开 始") ;
-//		bl.waitPro(1500);
+		new AutoInfo("战 斗 开 始") ;
+		bl.waitPro(1500);
 		battleFrame = new JFrame("Battle");
 		battleFrame.setSize(GUIWidth, GUIHeight);
 		battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -451,9 +451,7 @@ public class BattleHandler{
 		}
 		if(bl.isSuccess(slimeList)) {
 			bl.waitPro(1000);
-			new AutoInfo("战 斗 胜 利") ;
-			gameover = true;
-			battleFrame.dispose();
+			gameoverWithSuccess();
 		}
 		
 	}
@@ -470,9 +468,7 @@ public class BattleHandler{
 				updateUserState();
 				bl.waitPro(1000);
 				if (bl.isFailure(user)) {
-					new AutoInfo("战 斗 失 败") ;
-					gameover = true;
-					battleFrame.dispose();
+					gameoverWithFailure();
 					break;
 				}
 				getSlimeButton(i+1).setIcon(getSlimeIcon(1));
@@ -534,6 +530,30 @@ public class BattleHandler{
 		return ii;
 	}
 	
+	private void gameoverWithFailure() {
+		new AutoInfo("战 斗 失 败") ;
+		gameover = true;
+		battleFrame.dispose();
+	}
+	
+	private void gameoverWithSuccess() {
+		new AutoInfo("战 斗 胜 利") ;
+		gameover = true;
+		battleFrame.dispose();
+	}
+	
+	private void userInpoisonHandler() {
+		if (bl.isUserInPoison(user)) {
+			bl.userInPoisonInvoker(user);
+			updateUserState();
+			updateStatePanel();
+			if(bl.isFailure(user)) {
+				bl.waitPro(1000);
+				gameoverWithFailure();
+			}
+		}
+	}
+	
 	private void turnBegin() {
 		buttonEnable = false;
 		new Thread() {
@@ -552,11 +572,7 @@ public class BattleHandler{
 					if(gameover==false) {
 						new AutoInfo("我 方 回 合") ;
 						bl.waitPro(1500);
-						if (bl.isUserInPoison(user)) {
-							bl.userInPoisonHandler(user);
-							updateUserState();
-							updateStatePanel();
-						}
+						userInpoisonHandler();
 						buttonEnable = true;
 					}
 				}
@@ -569,15 +585,15 @@ public class BattleHandler{
 	
 	public static void main(String[] args) {
 		User user =new User("大魔王",2);
-		user.setCurrent_HP(10);
+		user.setCurrent_HP(30);
 		user.setP_ATK(20);
 		List<Slime> slimeList = new ArrayList<Slime>();
 		Slime slime1 = new GreenSlime();
-		slime1.setCurrent_HP(50);
+		slime1.setCurrent_HP(30);
 		slime1.setP_ATK(10);
 		slimeList.add(slime1);
 		Slime slime2 = new RedSlime();
-		slime2.setCurrent_HP(51);
+		slime2.setCurrent_HP(30);
 		slime2.setP_ATK(10);
 		slimeList.add(slime2);
 //		Slime slime3 = new GreenSlime();
