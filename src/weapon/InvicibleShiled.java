@@ -1,6 +1,6 @@
 package weapon;
 
-public class InvicibleShiled extends Weapon{
+public class InvicibleShiled extends Armor{
 	public InvicibleShiled() {
 		super();
 		this.setM_DEF(40);

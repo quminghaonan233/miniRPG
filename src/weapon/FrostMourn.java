@@ -1,6 +1,6 @@
 package weapon;
 
-public class FrostMourn extends Armor{
+public class FrostMourn extends Weapon{
 	public FrostMourn() {
 		super();		
 		this.setP_ATK(50);
