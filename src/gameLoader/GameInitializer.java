@@ -415,7 +415,7 @@ public class GameInitializer {
 			//jump to fight
 			System.out.println("´¥·¢Õ½¶·");
 			frame.setVisible(false);
-			new BattleHandler(this, user, fightSlime.subList(0, Math.min(3, fightSlime.size())));
+			new BattleHandler(this, user, fightSlime.subList(0, Math.min(3, fightSlime.size()))).start();
 
 		}
 		

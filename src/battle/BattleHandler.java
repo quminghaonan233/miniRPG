@@ -90,7 +90,6 @@ public class BattleHandler{
 	
 	//µÿÕº≥ı ºªØ
 	private void mapInit() {
-		gi.frame.setVisible(false);
 		battleFrame = new JFrame("Battle");
 		battleFrame.setSize(GUIWidth, GUIHeight);
 		battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -742,7 +741,7 @@ public class BattleHandler{
 //		slime3.setCurrent_HP(52);
 //		slime3.setP_ATK(10);
 //		slimeList.add(slime3);
-		new BattleHandler(user, slimeList).start();
+		new BattleHandler(null,user, slimeList).start();
 	}
 	
 }
