@@ -4,7 +4,9 @@ public enum EquipType {
 	Killer(Killer.class,0),
 	Knife(Knife.class,1),
 	DarkScarf(DarkScarf.class,2),
-	FireHeart(FireHeart.class,3);
+	FireHeart(FireHeart.class,3),
+	FrostMourn(FrostMourn.class,4),
+	InvicibleShiled(InvicibleShiled.class,5);
 	
 	private Class clazz;
 	private int equipId;

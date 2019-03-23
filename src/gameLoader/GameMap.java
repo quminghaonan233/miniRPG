@@ -57,7 +57,7 @@ public class GameMap implements Serializable{
 
 			int x = r.nextInt(xSize);
 			int y = r.nextInt(ySize);
-			Slime slime = s.createSlime(x,y);
+			Slime slime = s.createSlime(x,y,level);
 			Random random = new Random();
 			equip eq = EquipType.getEquipById(random.nextInt(EquipType.values().length));
 			if(eq != null && random.nextInt(100) < eq.getProbability()) {

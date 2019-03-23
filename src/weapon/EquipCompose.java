@@ -4,8 +4,8 @@ public enum EquipCompose {
 	FrostMourn(4,0,1),
 	InvicibleShiled(5,2,2);
 	
-	private int [] composeList;
-	private int equipId;
+	public int [] composeList;
+	public int equipId;
 	
 	private EquipCompose(int id,Integer...a) {
 		this.equipId = id;

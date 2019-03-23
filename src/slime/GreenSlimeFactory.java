@@ -17,7 +17,7 @@ public class GreenSlimeFactory implements SlimeFactory {
 	
 	@Override
 	public Slime createSlime(int x,int y,int level) {
-		return new GreenSlime(x,y);
+		return new GreenSlime(x,y,level);
 	}
 
 }
