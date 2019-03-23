@@ -7,6 +7,8 @@ import java.util.Random;
 import slime.Slime;
 import slime.SlimeFactory;
 import slime.SlimeType;
+import weapon.EquipType;
+import weapon.equip;
 
 public class GameMap implements Serializable{
 	public static final int xSize = 16;
@@ -52,9 +54,16 @@ public class GameMap implements Serializable{
 			int slimeType = r.nextInt(SlimeType.values().length);
 			
 			SlimeFactory s = SlimeType.getFactory(slimeType);
+
 			int x = r.nextInt(xSize);
 			int y = r.nextInt(ySize);
-			this.slimeList.add(s.createSlime(x,y));			
+			Slime slime = s.createSlime(x,y);
+			Random random = new Random();
+			equip eq = EquipType.getEquipById(random.nextInt(EquipType.values().length));
+			if(eq != null && random.nextInt(100) < eq.getProbability()) {
+				slime.setEquip(eq);
+			}
+			this.slimeList.add(slime);			
 		}
 		
 	}

@@ -158,7 +158,13 @@ public class Slime {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
-	
+	public equip getEquip() {
+		return equip;
+	}
+
+	public void setEquip(equip equip) {
+		this.equip = equip;
+	}
 	
 	public void move(int userX,int userY) {
 		Random r = new Random();

@@ -389,7 +389,7 @@ public class GameInitializer {
 		if(fightSlime.size() > 0) {
 			//jump to fight
 			System.out.println("´¥·¢Õ½¶·");
-			new BattleHandler(user, fightSlime.subList(0, Math.min(3, fightSlime.size()))).start();
+			new BattleHandler(frame, user, fightSlime.subList(0, Math.min(3, fightSlime.size()))).start();
 		}
 		
 	}

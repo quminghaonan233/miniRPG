@@ -2,6 +2,8 @@ package weapon;
 
 public class equip {
 	
+	protected int probability;
+	
 	protected int num;
 	
 	protected String imagePath;
@@ -57,6 +59,14 @@ public class equip {
 		this.CRT = 0;
 	}
 	
+	public int getProbability() {
+		return probability;
+	}
+
+	public void setProbability(int probability) {
+		this.probability = probability;
+	}
+
 	public int getNum() {
 		return num;
 	}
